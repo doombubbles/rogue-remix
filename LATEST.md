@@ -1,1 +1,1 @@
-- Initial Release
+- Fixed damage multiplier on the Now You See Me artifact

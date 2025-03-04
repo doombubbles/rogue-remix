@@ -53,7 +53,8 @@ public class NowYouSeeMe : ModItemArtifact
 
         artifactModel.AddTowerBehavior(new OverrideCamoDetectionModel("", true),
             model => model.towerTypes = baseIds.ToArray());
-        artifactModel.AddProjectileBehavior(new DamageModifierForTagModel("", BloonTag.Camo, artifactModel.tier * 2, 0,
+        artifactModel.AddProjectileBehavior(new DamageModifierForTagModel("", BloonTag.Camo,
+            (artifactModel.tier + 1) * 2, 0,
             false, false), model => model.towerTypes = baseIds.ToArray());
     }
 }
