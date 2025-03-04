@@ -1,1 +1,1 @@
-- Fixed damage multiplier on the Now You See Me artifact
+- Fixed Main Character artifact not fully working
