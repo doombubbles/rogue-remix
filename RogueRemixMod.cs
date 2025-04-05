@@ -32,30 +32,15 @@ public class RogueRemixMod : BloonsTD6Mod
         requiresRestart = true
     };
 
-    public static readonly ModSettingBool ArtifactLimit = new(true)
+    public static readonly ModSettingBool SellingReplacesDiscarding = new(true)
     {
-        description = "Whether to enable the Artifact Limit mechanic"
+        description = "Discarding an artifact will give tokens the same way selling it would"
     };
 
-    public static readonly ModSettingInt BaseArtifactLimit = new(10)
-    {
-        min = 1
-    };
-
-    public static readonly ModSettingBool BoostsRemix = new(true)
+    public static readonly ModSettingBool BoostsInShop = new(true)
     {
         description =
             "Makes boost popups no longer happen during matches, and instead Boosts can be purchased at Shop Tiles",
-        requiresRestart = true
-    };
-
-    public static readonly ModSettingFloat BoostScale = new(0.67f)
-    {
-        description = "Relative power level of Boost Artifacts compared to Vanilla",
-        max = 1,
-        min = .1f,
-        slider = true,
-        stepSize = .01f,
         requiresRestart = true
     };
 

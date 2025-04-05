@@ -14,6 +14,8 @@ namespace RogueRemix.NewArtifacts;
 
 public class PrecisionMunition : ModItemArtifact
 {
+    public override int MinTier => Rare;
+
     private static float Effect(int tier) => tier switch
     {
         Common => .1f,

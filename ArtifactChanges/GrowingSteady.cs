@@ -5,7 +5,7 @@ namespace RogueRemix.ArtifactChanges;
 public class GrowingSteady : ModVanillaArtifact
 {
     public override string Description(string description, int index) => description
-        .Replace("Druids attack reload time is increased 20%, but every round, ", "");
+        .Replace("Druids attack 17% slower, but e", "E");
 
     public override void ModifyArtifact(ItemArtifactModel artifact)
     {

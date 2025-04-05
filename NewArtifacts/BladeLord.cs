@@ -14,10 +14,12 @@ namespace RogueRemix.NewArtifacts;
 
 public class BladeLord : ModItemArtifact
 {
+    public override int MinTier => Rare;
+
     private static float Interval(int tier) => tier switch
     {
-        Common => .5f,
-        Rare => .4f,
+        Common => .7f,
+        Rare => .5f,
         Legendary => .3f,
         _ => 1
     };

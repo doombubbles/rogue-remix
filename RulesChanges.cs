@@ -1,8 +1,14 @@
-﻿using HarmonyLib;
+﻿using System.Linq;
+using BTD_Mod_Helper.Api;
+using BTD_Mod_Helper.Api.Legends;
+using HarmonyLib;
+using Il2CppAssets.Scripts.Data;
 using Il2CppAssets.Scripts.Data.Legends;
+using Il2CppAssets.Scripts.Models.Artifacts;
 using Il2CppAssets.Scripts.Unity.UI_New.GameOver;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using Il2CppAssets.Scripts.Unity.UI_New.Legends;
+
 namespace RogueRemix;
 
 public static class RulesChanges
@@ -11,7 +17,7 @@ public static class RulesChanges
     {
         var rules = data.rogueGameModeRules;
 
-        if (RogueRemixMod.BoostsRemix)
+        if (RogueRemixMod.BoostsInShop)
         {
             // rules.bossRushHealthMultiplier = 1.05f;
         }
@@ -36,6 +42,21 @@ public static class RulesChanges
                     break;
             }
         }
+
+        var ignoreCountArtifacts = RogueData.ignoreCountArtifacts.ToList();
+        foreach (var (id, artifact) in GameData.Instance.artifactsData.artifactDatas)
+        {
+            if (artifact.ArtifactModel().Cast<ArtifactModelBase>().IsBoost)
+            {
+                ignoreCountArtifacts.Add(id);
+            }
+        }
+        foreach (var modBoostArtifact in ModContent.GetContent<ModBoostArtifact>())
+        {
+            ignoreCountArtifacts.AddRange(modBoostArtifact.Ids);
+        }
+
+        RogueData.ignoreCountArtifacts = ignoreCountArtifacts.ToArray();
     }
 
     [HarmonyPatch(typeof(RogueVictoryScreen), nameof(RogueVictoryScreen.Open))]

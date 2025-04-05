@@ -84,15 +84,6 @@ public static class MarkdownGeneration
         File.WriteAllText(NewArtifactsPath, newArtifacts + newBoosts);
 
 
-        var boostChanges =
-            """
-            <h1>Boost Changes</h1>
-
-            | Boost | Common | Rare | Legendary |
-            |----------|--------|------|-----------|
-
-            """;
-
         var artifactChanges =
             """
 
@@ -105,20 +96,20 @@ public static class MarkdownGeneration
 
         foreach (var modVanillaArtifact in ModContent.GetInstance<RogueRemixMod>().Content.OfType<ModVanillaArtifact>())
         {
-            var boost = modVanillaArtifact is BoostArtifactChange;
+            var boost = false; // modVanillaArtifact is BoostArtifactChange;
             var cells = new[] {"", "—", "—", "—"};
-
-            var ogName = LocalizationManager.Instance.textTable[modVanillaArtifact.BaseId + "1"]
-                .Replace(" Common", "").Replace(" Rare", "").Replace(" Legendary", "");
-            var name = LocalizationManager.Instance.GetText(modVanillaArtifact.BaseId + "1")
-                .Replace(" Common", "").Replace(" Rare", "").Replace(" Legendary", "");
-            var finalName = GetStrikethroughDiff(ogName, name);
 
             var models = GameData.Instance.artifactsData.artifactDatas.Values()
                 .Select(data => data.ArtifactModel().Cast<ArtifactModelBase>())
                 .Where(model => model.ArtifactName.StartsWith(modVanillaArtifact.BaseId))
                 .OrderBy(model => model.tier)
                 .ToList();
+
+            var ogName = LocalizationManager.Instance.textTable[models.First().nameLocKey]
+                .Replace(" Common", "").Replace(" Rare", "").Replace(" Legendary", "").Replace(" {0}", "");
+            var name = LocalizationManager.Instance.GetText(models.First().nameLocKey)
+                .Replace(" Common", "").Replace(" Rare", "").Replace(" Legendary", "").Replace(" {0}", "");
+            var finalName = GetStrikethroughDiff(ogName, name);
 
             var icon = ResourceLoader.LoadAsync(models.First().icon.Cast<IAssetReference<Sprite>>());
 
@@ -130,7 +121,7 @@ public static class MarkdownGeneration
             var count = 0;
             foreach (var model in models)
             {
-                var ogDescription = LocalizationManager.Instance.textTable[model.DescriptionLocKey];
+                var ogDescription = model.GetDescription(LocalizationManager.Instance.Cast<ILocProvider>());
                 var newDescription = modVanillaArtifact.Description(ogDescription, i++);
 
                 if (newDescription is not null)
@@ -151,20 +142,13 @@ public static class MarkdownGeneration
 
             var row = "| " + cells.Join(delimiter: " | ") + " |\n";
 
-            if (boost)
-            {
-                boostChanges += row;
-            }
-            else
-            {
-                artifactChanges += row;
-            }
+            artifactChanges += row;
 
             ModHelper.Msg<RogueRemixMod>($"Generated {name}");
         }
 
 
-        File.WriteAllText(ArtifactChangesPath, artifactChanges + boostChanges);
+        File.WriteAllText(ArtifactChangesPath, artifactChanges);
     }
 
     private static string GetStrikethroughDiff(string oldText, string newText)

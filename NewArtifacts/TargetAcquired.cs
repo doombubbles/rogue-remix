@@ -72,7 +72,7 @@ public class TargetAcquired : ModItemArtifact
             }
         }
 
-        if (!mortar)
+        if (mortar)
         {
             foreach (var model in gameModel.towers.Where(model => model.baseId == TowerType.MortarMonkey))
             {

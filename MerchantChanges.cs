@@ -6,12 +6,11 @@ using BTD_Mod_Helper.Extensions;
 using HarmonyLib;
 using Il2Cpp;
 using Il2CppAssets.Scripts.Data;
-using Il2CppAssets.Scripts.Unity.Menu;
-using Il2CppAssets.Scripts.Unity.UI_New;
 using Il2CppAssets.Scripts.Unity.UI_New.Legends;
 using Il2CppAssets.Scripts.Unity.UI_New.Popups;
 using Il2CppNinjaKiwi.Common;
 using UnityEngine;
+using UnityEngine.InputSystem.Utilities;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
@@ -23,9 +22,16 @@ public static class MerchantChanges
         "Are you sure you want to reroll? This will cancel the current trade offer.");
 
     public static bool IsPopulatingShop { get; private set; }
+    public static bool ShouldAddBoosts { get; private set; }
 
     public static Vector2Int? lastTile;
     public static int currentRerolls;
+
+    private static string RerollsKey(this RogueTile rogueTile) =>
+        $"MerchantInventoryRerollCount({rogueTile.coords.x}, {rogueTile.coords.y})";
+
+    private static string BoostPurchaedKey(this RogueTile rogueTile) =>
+        $"MerchantBoostPurchased({rogueTile.coords.x}, {rogueTile.coords.y})";
 
     public static void Reroll(RogueMerchantPanel merchantPanel, bool bypassPopup = false)
     {
@@ -45,8 +51,17 @@ public static class MerchantChanges
 
         merchantPanel.merchantTile.seed++;
         currentRerolls++;
-        merchantPanel.Open(merchantPanel.merchantTile);
+        merchantPanel.RogueSaveData.tileMetaData[merchantPanel.merchantTile.RerollsKey()] = $"{currentRerolls}";
 
+        var tileMetaData = merchantPanel.RogueSaveData.tileMetaData;
+        foreach (var key in tileMetaData.Keys().ToArray())
+        {
+            if (key.StartsWith("MerchantInventoryItem") || key.StartsWith("MerchantInventoryCount"))
+            {
+                tileMetaData.Remove(key);
+            }
+        }
+        merchantPanel.Open(merchantPanel.merchantTile);
     }
 
     public static int RerollCost => (currentRerolls + 1) * 3;
@@ -60,17 +75,15 @@ public static class MerchantChanges
         [HarmonyPrefix]
         internal static void Prefix(RogueMerchantPanel __instance, RogueTile merchantTile)
         {
+            var metadata = __instance.RogueSaveData.tileMetaData;
+            currentRerolls = int.TryParse(metadata.GetValueOrDefault(merchantTile.RerollsKey()), out var r) ? r : 0;
+
             if (__instance.tradeBtn.transform.parent.FindChildWithName("Reroll") == null &&
                 merchantTile.coords == lastTile)
             {
                 merchantTile.seed += currentRerolls;
             }
-
-            if (lastTile != merchantTile.coords)
-            {
-                currentRerolls = 0;
-                lastTile = merchantTile.coords;
-            }
+            lastTile = merchantTile.coords;
 
             foreach (var selectedInventoryArtifactIcon in __instance.selectedInventoryArtifactIcons)
             {
@@ -156,33 +169,43 @@ public static class MerchantChanges
         internal static void Prefix(RogueMerchantPanel __instance)
         {
             IsPopulatingShop = true;
+            ShouldAddBoosts =
+                !__instance.RogueSaveData.tileMetaData.ContainsKey(__instance.merchantTile.BoostPurchaedKey());
         }
 
         [HarmonyPostfix]
         internal static void Postfix(RogueMerchantPanel __instance)
         {
             IsPopulatingShop = false;
+            ShouldAddBoosts = false;
         }
     }
 
-    /*
     /// <summary>
-    /// Allow multiple shop trades
+    /// Enforce only buying 1 boost per shop
     /// </summary>
-    [HarmonyPatch(typeof(RogueMerchantPanel), nameof(RogueMerchantPanel.ShowLootPopups))]
-    internal static class RogueMerchantPanel_ShowLootPopups
+    [HarmonyPatch(typeof(RogueMerchantPanel), nameof(RogueMerchantPanel.MakeTrade))]
+    internal static class RogueMerchantPanel_MakeTrade
     {
         [HarmonyPrefix]
-        internal static bool Prefix(RogueMerchantPanel __instance)
+        internal static void Prefix(RogueMerchantPanel __instance)
         {
-            if (__instance.lootToShow.Count <= 0)
+            foreach (var artifactIcon in __instance.selectedMerchantArtifactIcons)
             {
-                __instance.Open(__instance.merchantTile);
-                return false;
+                if (artifactIcon.gameObject.activeSelf && artifactIcon.artifactModel.IsBoost)
+                {
+                    var metadata = __instance.RogueSaveData.tileMetaData;
+                    metadata[__instance.merchantTile.BoostPurchaedKey()] = "true";
+                    foreach (var key in metadata.Keys().ToArray())
+                    {
+                        if (key.StartsWith("MerchantInventoryItem") && metadata[key].StartsWith("BoostArtifact"))
+                        {
+                            metadata.Remove(key);
+                        }
+                    }
+                    return;
+                }
             }
-
-            return true;
         }
     }
-    */
 }

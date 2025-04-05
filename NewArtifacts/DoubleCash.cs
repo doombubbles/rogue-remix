@@ -14,7 +14,7 @@ public class DoubleCash : ModItemArtifact
     public override int MinTier => Legendary;
 
     public override string DescriptionLegendary =>
-        "Starting cash and cash per pop is doubled. All tower attack reload time increased 50%";
+        "Starting cash and cash per pop is doubled. All towers attack 50% slower";
 
     public override string Icon => VanillaSprites.DoubleCashIconSmall;
     public override bool SmallIcon => true;

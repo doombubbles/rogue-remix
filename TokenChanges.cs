@@ -9,7 +9,6 @@ using Il2CppAssets.Scripts.Models.Artifacts;
 using Il2CppAssets.Scripts.Unity.UI_New.Legends;
 using Il2CppAssets.Scripts.Unity.UI_New.Popups;
 using Il2CppSystem.Collections.Generic;
-using RogueRemix.NewArtifacts;
 
 namespace RogueRemix;
 
@@ -98,7 +97,7 @@ public static class TokenChanges
 
             if (MerchantChanges.IsPopulatingShop)
             {
-                if (RogueRemixMod.BoostsRemix)
+                if (RogueRemixMod.BoostsInShop && MerchantChanges.ShouldAddBoosts)
                 {
                     var boosts = __instance.GetRandomArtifacts(3, RogueLootType.boost, 0, tileSeed,
                         guaranteedLegendary: guaranteedLegendary > 0 ? 1 : 0);

@@ -1,5 +1,6 @@
 ﻿using BTD_Mod_Helper.Api.Legends;
 using BTD_Mod_Helper.Extensions;
+using Il2CppAssets.Scripts.Data.Legends;
 using Il2CppAssets.Scripts.Models;
 using Il2CppAssets.Scripts.Models.Artifacts;
 using Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack;
@@ -31,7 +32,9 @@ public class Unboosted : ModItemArtifact
 
     public override void ModifyGameModel(GameModel gameModel, int tier)
     {
-        if (LegendsManager.instance.RogueSaveData.BoostCount() > 0) return;
+        if (LegendsManager.instance.RogueSaveData.artifactsInventory.Where(loot => loot.lootType == RogueLootType.permanent &&
+                loot.baseId != "Token" &&
+                loot.artifactName.Contains("BoostArtifact")).Count > 0) return;
 
         var amount = 1 + Effect(tier) * (LegendsManager.instance.RogueSaveData.stage + 1);
 

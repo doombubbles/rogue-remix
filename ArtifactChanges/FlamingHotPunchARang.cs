@@ -10,8 +10,7 @@ namespace RogueRemix.ArtifactChanges;
 public class FlamingHotPunchARang : ModVanillaArtifact
 {
     public override string Description(string description, int index) =>
-        description.Replace("have reduced pierce, but ", "").Replace("Red Hot Rangs",
-            "Red Hot Rangs, White Hot Spikes, Hot Shots, and Heat-tipped Darts");
+        description.Replace("Red Hot Rangs", "Red Hot Rangs, White Hot Spikes, Hot Shots, and Heat-tipped Darts");
 
     public override void ModifyArtifact(ItemArtifactModel artifact)
     {

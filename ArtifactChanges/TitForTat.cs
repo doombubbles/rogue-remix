@@ -4,10 +4,10 @@ namespace RogueRemix.ArtifactChanges;
 
 public class TitForTat : ModVanillaArtifact
 {
-    public override string Description(string description, int index) => description.Replace("move 25%", "move 15%");
+    public override string Description(string description, int index) => description.Replace("move 25%", "move 17%");
 
     public override void ModifyArtifact(ItemArtifactModel artifact)
     {
-        artifact.GetDescendant<SlowBloonsZoneModel>().speedScale = 1.15f;
+        artifact.GetDescendant<SlowBloonsZoneModel>().speedScale = 1.17f;
     }
 }

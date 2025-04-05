@@ -13,6 +13,12 @@ public static class SkippingChanges
     private static bool blockNextLifeLossAnalytics;
     private static bool blockNextLifeLossAnim;
 
+#if DEBUG
+    private static readonly bool DebugFreeSkipping = true;
+#else
+    private static readonly bool DebugFreeSkipping = false;
+#endif
+
     [HarmonyPatch(typeof(RogueTileInfoPanel), nameof(RogueTileInfoPanel.Bind))]
     internal static class RogueTileInfoPanel_Bind
     {
@@ -20,14 +26,15 @@ public static class SkippingChanges
         internal static void Postfix(RogueTileInfoPanel __instance, RogueTile selectedTile, bool showContinueBtn,
             bool showSkipBtn)
         {
-            if (!RogueRemixMod.SkippingRemix) return;
+            if (!RogueRemixMod.SkippingRemix && !DebugFreeSkipping) return;
 
             __instance.skipBtn
                 .GetComponentsInChildren<RectTransform>(true)
                 .First(transform => transform.name == "Cost")
-                .gameObject.SetActive(showContinueBtn ||
-                                      selectedTile.tileType != RogueTileType.pathStandardGame ||
-                                      !showSkipBtn);
+                .gameObject.SetActive(!DebugFreeSkipping &&
+                                      (showContinueBtn ||
+                                       selectedTile.tileType != RogueTileType.pathStandardGame ||
+                                       !showSkipBtn));
         }
     }
 
