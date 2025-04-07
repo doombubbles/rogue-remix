@@ -7,9 +7,10 @@ using Il2CppAssets.Scripts.Models.Towers;
 using Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack;
 using Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions;
 using Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors;
-using Il2CppAssets.Scripts.Simulation;
+using Il2CppAssets.Scripts.Models.Towers.Weapons.Behaviors;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
+
 namespace RogueRemix.NewArtifacts;
 
 public class PrecisionMunition : ModItemArtifact
@@ -69,6 +70,15 @@ public class PrecisionMunition : ModItemArtifact
                     projectile.RemoveBehavior<TrackTargetModel>();
                     projectile.AddBehavior(new InstantModel("", false, false, false));
                     projectile.AddBehavior(new AgeModel("", .1f, 0, false, null));
+
+                    if (weapon.GetBehavior<AlternateProjectileModel>().Is(out var alternate))
+                    {
+                        alternate.emissionModel = new InstantDamageEmissionModel("", null);
+                        alternate.projectile.RemoveBehavior<TravelStraitModel>();
+                        alternate.projectile.RemoveBehavior<TrackTargetModel>();
+                        alternate.projectile.AddBehavior(new InstantModel("", false, false, false));
+                        alternate.projectile.AddBehavior(new AgeModel("", .1f, 0, false, null));
+                    }
                 }
             });
         }
