@@ -5,10 +5,10 @@ using Il2CppAssets.Scripts.Models.TowerSets;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 namespace RogueRemix.ArtifactChanges;
 
-public class EssenceOfDreadbloon : ModVanillaArtifact
+public class EssenceOfPhayze : ModVanillaArtifact
 {
     public override string Description(string description, int tier) =>
-        description.Replace("Tier 5 Monkeys and level 20 Heroes", "Heroes and Tier 5 Monkeys");
+        description.Replace("tier 5 Monkeys and level 20 Heroes", "Heroes and tier 5 Monkeys");
 
     public override void ModifyArtifact(ItemArtifactModel artifact)
     {

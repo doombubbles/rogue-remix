@@ -5,7 +5,7 @@ namespace RogueRemix.ArtifactChanges;
 
 public class AbsoluteAbility : ModVanillaArtifact
 {
-    public override string Description(string description, int index) => description.Replace("10%", "5%");
+    public override string Description(string description, int tier) => description.Replace("10%", "5%");
 
     public override void ModifyArtifact(ItemArtifactModel artifact)
     {

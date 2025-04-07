@@ -9,7 +9,9 @@ namespace RogueRemix.ArtifactChanges;
 
 public class FlamingHotPunchARang : ModVanillaArtifact
 {
-    public override string Description(string description, int index) =>
+    public override string? DisplayName(string name) => name.Replace("-A-Rang", "");
+
+    public override string Description(string description, int tier) =>
         description.Replace("Red Hot Rangs", "Red Hot Rangs, White Hot Spikes, Hot Shots, and Heat-tipped Darts");
 
     public override void ModifyArtifact(ItemArtifactModel artifact)
@@ -31,25 +33,4 @@ public class FlamingHotPunchARang : ModVanillaArtifact
         darts.tiers = new Il2CppStructArray<int>([6, 2, 6]);
         artifact.AddBehavior(darts);
     }
-}
-
-public class FlamingHotPunch1 : ModTextOverride
-{
-    public override string LocalizationKey => "FlamingHotPunchARang1";
-    public override bool Active => true;
-    public override string TextValue => "Flaming Hot Punch Common";
-}
-
-public class FlamingHotPunch2 : ModTextOverride
-{
-    public override string LocalizationKey => "FlamingHotPunchARang2";
-    public override bool Active => true;
-    public override string TextValue => "Flaming Hot Punch Rare";
-}
-
-public class FlamingHotPunch3 : ModTextOverride
-{
-    public override string LocalizationKey => "FlamingHotPunchARang3";
-    public override bool Active => true;
-    public override string TextValue => "Flaming Hot Punch Legendary";
 }

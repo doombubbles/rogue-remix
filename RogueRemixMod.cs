@@ -37,11 +37,10 @@ public class RogueRemixMod : BloonsTD6Mod
         description = "Discarding an artifact will give tokens the same way selling it would"
     };
 
-    public static readonly ModSettingBool BoostsInShop = new(true)
+    public static readonly ModSettingBool BoostsInShop = new(false)
     {
         description =
-            "Makes boost popups no longer happen during matches, and instead Boosts can be purchased at Shop Tiles",
-        requiresRestart = true
+            "Makes boost popups no longer happen during matches, and instead Boosts can be purchased at Shop Tiles"
     };
 
     public static readonly ModSettingBool ArtifactUpgrading = new(true)

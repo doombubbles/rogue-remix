@@ -8,7 +8,7 @@ namespace RogueRemix.ArtifactChanges;
 
 public class EssenceOfBlastapopoulos : ModVanillaArtifact
 {
-    public override string Description(string description, int index) =>
+    public override string Description(string description, int tier) =>
         description.Replace("Tier 5 Monkeys and level 20 Heroes", "Heroes and Tier 5 Monkeys").Replace("+4", "+2");
 
     public override void ModifyArtifact(ItemArtifactModel artifact)

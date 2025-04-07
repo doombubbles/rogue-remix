@@ -32,9 +32,9 @@ public class Unboosted : ModItemArtifact
 
     public override void ModifyGameModel(GameModel gameModel, int tier)
     {
-        if (LegendsManager.instance.RogueSaveData.artifactsInventory.Where(loot => loot.lootType == RogueLootType.permanent &&
-                loot.baseId != "Token" &&
-                loot.artifactName.Contains("BoostArtifact")).Count > 0) return;
+        if (LegendsManager.instance.RogueSaveData.artifactsInventory
+                .Where(loot => loot.artifactName.Contains("BoostArtifact")).Count >
+            0) return;
 
         var amount = 1 + Effect(tier) * (LegendsManager.instance.RogueSaveData.stage + 1);
 

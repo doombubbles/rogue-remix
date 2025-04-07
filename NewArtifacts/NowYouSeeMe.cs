@@ -16,12 +16,20 @@ namespace RogueRemix.NewArtifacts;
 
 public class NowYouSeeMe : ModItemArtifact
 {
+    private static float Effect(int tier) => tier switch
+    {
+        Common => 1,
+        Rare => 1.5f,
+        Legendary => 2f,
+        _ => 1
+    };
+
     public override string DescriptionCommon =>
         "Grants Camo detection to all Towers and Heroes that cannot naturally attack Camo Bloons before Tier 5 / Level 20.";
     public override string DescriptionRare =>
-        "Grants Camo detection and 2x Camo damage to all Towers and Heroes that cannot naturally attack Camo Bloons before Tier 5 / Level 20.";
+        "Grants Camo detection and 1.5x Camo damage to all Towers and Heroes that cannot naturally attack Camo Bloons before Tier 5 / Level 20.";
     public override string DescriptionLegendary =>
-        "Grants Camo detection and 4x Camo damage to all Towers and Heroes that cannot naturally attack Camo Bloons before Tier 5 / Level 20.";
+        "Grants Camo detection and 2x Camo damage to all Towers and Heroes that cannot naturally attack Camo Bloons before Tier 5 / Level 20.";
 
     public override bool SmallIcon => true;
 
@@ -53,8 +61,8 @@ public class NowYouSeeMe : ModItemArtifact
 
         artifactModel.AddTowerBehavior(new OverrideCamoDetectionModel("", true),
             model => model.towerTypes = baseIds.ToArray());
-        artifactModel.AddProjectileBehavior(new DamageModifierForTagModel("", BloonTag.Camo,
-            (artifactModel.tier + 1) * 2, 0,
-            false, false), model => model.towerTypes = baseIds.ToArray());
+        artifactModel.AddProjectileBehavior(
+            new DamageModifierForTagModel("", BloonTag.Camo, Effect(artifactModel.tier), 0, false, false),
+            model => model.towerTypes = baseIds.ToArray());
     }
 }

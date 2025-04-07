@@ -138,4 +138,20 @@ public static class ArtifactSelling
             return true;
         }
     }
+
+    [HarmonyPatch(typeof(DisplayArtifactsPanel), nameof(DisplayArtifactsPanel.OpenDelete))]
+    internal static class DisplayArtifactsPanel_OpenDelete
+    {
+        [HarmonyPostfix]
+        internal static void Postfix(DisplayArtifactsPanel __instance)
+        {
+            foreach (var artifactIcon in __instance.activeArtifactIcons)
+            {
+                if (RogueData.ignoreCountArtifacts.Contains(artifactIcon.artifactModel.ArtifactName))
+                {
+                    artifactIcon.gameObject.SetActive(false);
+                }
+            }
+        }
+    }
 }

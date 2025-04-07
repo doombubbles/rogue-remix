@@ -28,11 +28,11 @@ public static class Completionism
             var rogueRemixStats = stats[nameof(RogueRemix)];
 
             rogueRemixStats[saveData.selectedHeroSkin + "Bronze"] = true;
-            if (saveData.stage >= 3)
+            if (saveData.stage >= 2)
             {
                 rogueRemixStats[saveData.selectedHeroSkin + "Silver"] = true;
             }
-            if (saveData.stage >= 5)
+            if (saveData.stage >= 4)
             {
                 rogueRemixStats[saveData.selectedHeroSkin + "Gold"] = true;
                 if (saveData.isChimps)

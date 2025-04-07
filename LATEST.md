@@ -12,11 +12,9 @@ name "Selling Replaces Discarding" (default on).
 ### Boosts Changes
 
 NK has also added a CHIMPS curse option for turning off Boosts mid-game, as well as a nice QoL feature to have them
-queued anyway. So, the "Boosts Remix" setting is just becoming the "Boosts In Shop" (still default on) setting which
-controls the Boosts appearing in merchant shops.
-
-This is something that may be revisited in a future update, given that it's now a bit confusing since they also added their
-own permanent artifact versions of the Boosts.
+queued anyway. So, the "Boosts Remix" setting is just becoming the "Boosts In Shop" setting which
+controls the Boosts appearing in merchant shops. With the new ability to do multiple trades from the shop, this is now a
+very strong feature so the setting is becoming Default Off.
 
 ### Vanilla Artifact Changes
 
@@ -36,8 +34,13 @@ Two modded artifacts have been removed as they were essentially added by NK: Rad
 Pirate Cove (Perceptive Crow).
 
 Other Changes:
+
 - Blade Lord and Precision Munitions both now start at Rare tier, effects unchanged
 - Target Acquired fixed for Mortar Monkeys
+- Upgrade Cycle's discount is slightly reduced
+- Now You See Me's camo damage reduced to stay more in line with Essence of Phayze nerf
+
+[Full List](/NewArtifacts.md)
 
 ### Hero Borders
 

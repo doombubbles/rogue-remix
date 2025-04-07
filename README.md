@@ -54,12 +54,13 @@ merge together to upgrade to a higher tier. A green upgrade icon appears on the 
 
 ### Merchant Changes
 
-Merchants' inventory always include an extra 3 Permanent Boosts available, of which you can purchase one per merchant
-tile.
-On Legendary Shop tiles, one of the boosts will be guaranteed Legendary.
-
 You can now spend tokens to reroll a Merchant's shop. Starts at a cost of 3 Tokens, and increases by 3 each time per
 shop.
+
+Merchants' inventory can now include an extra 3 Permanent Boosts available, of which you can purchase one per merchant
+tile.
+On Legendary Shop tiles, one of the boosts will be guaranteed Legendary.
+As of BTD6 v48, this feature is Default Off due its to power level, but can be enabled in the mod settings.
 
 ![Screenshot of the merchant panel showing reroll option and boosts](Images/Screenshots/ScreenshotMerchant.png)
 

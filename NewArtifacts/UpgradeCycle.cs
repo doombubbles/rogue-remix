@@ -10,9 +10,9 @@ public class UpgradeCycle : ModItemArtifact
 {
     private static float Effect(int tier) => tier switch
     {
-        Common => .15f,
-        Rare => .20f,
-        Legendary => .35f,
+        Common => .1f,
+        Rare => .15f,
+        Legendary => .25f,
         _ => 0f,
     };
 
@@ -23,6 +23,6 @@ public class UpgradeCycle : ModItemArtifact
 
     public override void ModifyArtifactModel(ItemArtifactModel artifactModel)
     {
-        artifactModel.AddBoostBehavior(new DiscountBoostBehaviorModel("", Effect(artifactModel.tier)));
+        artifactModel.AddBoostBehavior(new DiscountBoostBehaviorModel("", 1 - Effect(artifactModel.tier)));
     }
 }

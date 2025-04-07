@@ -11,7 +11,7 @@ namespace RogueRemix.ArtifactChanges;
 
 public class MightyMulligan : ModVanillaArtifact
 {
-    public override string? Description(string description, int index) => description + ". Refreshes at start of stage";
+    public override string? Description(string description, int tier) => description + ". Refreshes at start of stage";
 
     public override void ModifyArtifact(MapArtifactModel artifact)
     {

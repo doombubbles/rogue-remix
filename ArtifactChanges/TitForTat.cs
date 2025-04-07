@@ -4,7 +4,7 @@ namespace RogueRemix.ArtifactChanges;
 
 public class TitForTat : ModVanillaArtifact
 {
-    public override string Description(string description, int index) => description.Replace("move 25%", "move 17%");
+    public override string Description(string description, int tier) => description.Replace("move 25%", "move 17%");
 
     public override void ModifyArtifact(ItemArtifactModel artifact)
     {
