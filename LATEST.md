@@ -1,1 +1,5 @@
 - Fixed Precision Munition for Recursive Clusters
+- Unboosted will now only naturally show up in runs if the Boosts In Shop setting is on
+- Main Character and Battlefield Commission now correctly work together
+- Fixed bug with Double Cash artifact and restarting
+- Fixed Downsizing artifact not fully changing tower footprint size for all scenarios

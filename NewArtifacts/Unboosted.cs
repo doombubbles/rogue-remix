@@ -1,14 +1,16 @@
-﻿using BTD_Mod_Helper.Api.Legends;
+﻿using System.Collections.Generic;
+using BTD_Mod_Helper.Api;
+using BTD_Mod_Helper.Api.Legends;
 using BTD_Mod_Helper.Extensions;
-using Il2CppAssets.Scripts.Data.Legends;
+using HarmonyLib;
 using Il2CppAssets.Scripts.Models;
 using Il2CppAssets.Scripts.Models.Artifacts;
 using Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack;
 using Il2CppAssets.Scripts.Models.Towers.Projectiles;
 using Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors;
 using Il2CppAssets.Scripts.Models.Towers.Weapons;
-using Il2CppAssets.Scripts.Simulation;
 using Il2CppAssets.Scripts.Unity.UI_New.Legends;
+
 namespace RogueRemix.NewArtifacts;
 
 public class Unboosted : ModItemArtifact
@@ -45,6 +47,22 @@ public class Unboosted : ModItemArtifact
             tower.GetDescendants<WeaponModel>().ForEach(model => model.Rate /= amount);
             tower.GetDescendants<ProjectileModel>().ForEach(model => model.pierce *= amount);
             tower.GetDescendants<DamageModel>().ForEach(model => model.damage *= amount);
+        }
+    }
+
+    [HarmonyPatch(typeof(LegendsManager), nameof(LegendsManager.HasArtifactInLootPoolAlready))]
+    internal static class LegendsManager_HasArtifactInLootPoolAlready
+    {
+        [HarmonyPrefix]
+        internal static bool Prefix(LegendsManager __instance, ArtifactModelBase artifactModel, ref bool __result)
+        {
+            if (!RogueRemixMod.BoostsInShop && artifactModel.baseId.Contains(nameof(Unboosted)))
+            {
+                __result = true;
+                return false;
+            }
+
+            return true;
         }
     }
 }

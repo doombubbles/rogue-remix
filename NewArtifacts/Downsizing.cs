@@ -50,7 +50,9 @@ public class Downsizing : ModItemArtifact
                 rectangle.yWidth *= 1 - Effect(tier);
             }
 
-            tower.displayScale = Math.Sqrt(1 - Effect(tier)); // TODO why does this look more accurate?
+            tower.displayScale = 1 - Effect(tier);
+            tower.radius *= 1 - Effect(tier);
+            tower.RadiusSquared *= tower.radius * tower.radius;
         }
     }
 
