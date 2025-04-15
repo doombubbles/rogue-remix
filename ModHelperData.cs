@@ -16,7 +16,7 @@ public static class ModHelperData
         - Achieve Black Borders for your Hero Loadouts!
         """;
 
-    public const string RepoOwner = "doomubbles";
+    public const string RepoOwner = "doombubbles";
     public const string RepoName = "rogue-remix";
 
     public const bool SquareIcon = true;
