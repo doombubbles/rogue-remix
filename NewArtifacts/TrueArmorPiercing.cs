@@ -1,4 +1,6 @@
-﻿using BTD_Mod_Helper.Api.Enums;
+﻿using System.Collections.Generic;
+using BTD_Mod_Helper.Api;
+using BTD_Mod_Helper.Api.Enums;
 using BTD_Mod_Helper.Api.Legends;
 using BTD_Mod_Helper.Extensions;
 using Il2Cpp;

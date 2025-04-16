@@ -14,6 +14,8 @@ public class AlchemicEngineering : ModVanillaArtifact
     public override string Description3 =>
         "Tier 3 and higher Engineers have pierce increased 45% and convert Bloons to Gold. Adds a 0-0-2 Engineer to your Party";
 
+    public override string MetaDescription => "Pierce downsides decreased";
+
     public override void ModifyArtifact(ItemArtifactModel artifact)
     {
         if (!artifact.HasDescendant(out PierceBoostBehaviorModel pierceBoostBehaviorModel))

@@ -1,22 +1,30 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using MelonLoader;
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api;
+using BTD_Mod_Helper.Api.Components;
+using BTD_Mod_Helper.Api.Enums;
 using BTD_Mod_Helper.Api.Helpers;
 using BTD_Mod_Helper.Api.Legends;
 using BTD_Mod_Helper.Api.ModOptions;
 using BTD_Mod_Helper.Extensions;
+using HarmonyLib;
 using Il2CppAssets.Scripts.Data;
+using Il2CppAssets.Scripts.Data.Artifacts;
 using Il2CppAssets.Scripts.Models;
 using Il2CppAssets.Scripts.Models.Artifacts;
 using Il2CppAssets.Scripts.Models.Artifacts.Behaviors;
+using Il2CppAssets.Scripts.Simulation;
 using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using Il2CppAssets.Scripts.Unity.UI_New.Legends;
 using Il2CppAssets.Scripts.Unity.UI_New.Popups;
 using Il2CppNinjaKiwi.Common.ResourceUtils;
 using RogueRemix;
+using UnityEngine;
 
 [assembly: MelonInfo(typeof(RogueRemixMod), ModHelperData.Name, ModHelperData.Version, ModHelperData.RepoOwner)]
 [assembly: MelonGame("Ninja Kiwi", "BloonsTD6")]
@@ -25,6 +33,18 @@ namespace RogueRemix;
 
 public class RogueRemixMod : BloonsTD6Mod
 {
+    public static readonly ModSettingBool DamageBoostsAffectModifiers = new(true)
+    {
+        description =
+            "By default, damage bonuses from boosts and artifacts don't affect additive modifiers like what Moab Maulers have. " +
+            "This settings makes them be affected."
+    };
+
+    public static readonly ModSettingBool AlwaysStockXpAndMM = new(true)
+    {
+        description = "Makes merchants also stock the Rogue XP and Monkey Money tokens on stage 1 and after stage 4"
+    };
+
     public static readonly ModSettingBool DisableCritPopups = new(true)
     {
         description =
@@ -132,4 +152,5 @@ public class RogueRemixMod : BloonsTD6Mod
             artifactSynergy.ModifyOtherArtifacts(artifacts, tier);
         }
     }
+
 }

@@ -4,8 +4,12 @@ using BTD_Mod_Helper.Api.Legends;
 using BTD_Mod_Helper.Extensions;
 using Il2CppAssets.Scripts.Models;
 using Il2CppAssets.Scripts.Models.Artifacts;
+using Il2CppAssets.Scripts.Models.Artifacts.Behaviors;
+using Il2CppAssets.Scripts.Models.Towers;
 using Il2CppAssets.Scripts.Models.Towers.Weapons;
 using Il2CppAssets.Scripts.Simulation;
+using Il2CppAssets.Scripts.Unity;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 namespace RogueRemix.NewArtifacts;
 
@@ -27,16 +31,31 @@ public class GottaGoFast : ModItemArtifact
 
     public override void ModifyArtifactModel(ItemArtifactModel artifactModel)
     {
-    }
+        var towerUpgrades = Game.instance.model.towers.GroupBy(model => model.baseId)
+            .ToDictionary(
+                group => group.Key,
+                group => group.SelectMany(model => model.appliedUpgrades).Distinct().ToArray()
+            );
 
-    public override void ModifyGameModel(GameModel gameModel, int tier)
-    {
-        foreach (var tower in gameModel.towers)
+        foreach (var (tower, upgrades) in towerUpgrades)
         {
-            if (tower.appliedUpgrades.Any(s => s.Contains("Faster")))
+            var tiers = new[] {6, 6, 6};
+            var any = false;
+
+            foreach (var upgrade in upgrades.Where(s => s.Contains("Faster")))
             {
-                tower.GetDescendants<WeaponModel>().ForEach(model => model.Rate *= 1 - Speed(tier));
+                var upgradeModel = Game.instance.model.GetUpgrade(upgrade);
+                tiers[upgradeModel.path] = upgradeModel.tier + 1;
+                any = true;
             }
+
+            if (!any) continue;
+
+            artifactModel.AddBoostBehavior(new RateBoostBehaviorModel("", 1 / (1 + Speed(artifactModel.tier))), boost =>
+            {
+                boost.towerTypes = new Il2CppStringArray([tower]);
+                boost.tiers = tiers;
+            });
         }
     }
 }

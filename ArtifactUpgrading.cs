@@ -7,9 +7,11 @@ using Il2Cpp;
 using Il2CppAssets.Scripts.Data;
 using Il2CppAssets.Scripts.Data.Legends;
 using Il2CppAssets.Scripts.Models.Artifacts;
+using Il2CppAssets.Scripts.Simulation.SMath;
 using Il2CppAssets.Scripts.Unity.UI_New.Legends;
-using RogueRemix.NewArtifacts;
-using UnityEngine;
+using Il2CppNinjaKiwi.Common;
+using UnityEngine.UI;
+using Vector2 = UnityEngine.Vector2;
 
 namespace RogueRemix;
 
@@ -21,7 +23,8 @@ public static class ArtifactUpgrading
     {
         if (!RogueRemixMod.ArtifactUpgrading ||
             LegendsManager.instance?.RogueSaveData == null ||
-            artifactName.Contains("BoostArtifact")) return;
+            artifactName.Contains("BoostArtifact") ||
+            artifactName.StartsWith("Token")) return;
 
         var upgradeIcon = icon.GetComponentsInChildren<ModHelperImage>(true)
             .FirstOrDefault(image => image.name == "Upgrade");
@@ -80,7 +83,7 @@ public static class ArtifactUpgrading
                 artifact.artifactName = artifactModel!.name;
             }
 
-            if (artifact.artifactName.Contains("BoostArtifact"))
+            if (artifact.artifactName.Contains("BoostArtifact") || artifact.artifactName.StartsWith("Token"))
             {
                 allowStacking = true;
             }
@@ -110,11 +113,73 @@ public static class ArtifactUpgrading
     internal static class RogueArtifactDisplayIcon_Bind
     {
         [HarmonyPostfix]
-        internal static void Postfix(RogueArtifactDisplayIcon __instance, ArtifactModelBase artifactModel)
+        internal static void Postfix(RogueArtifactDisplayIcon __instance, ArtifactModelBase artifactModel,
+            RogueArtifactDisplayIcon.ArtifactSelected? onAddCallback,
+            RogueArtifactDisplayIcon.ArtifactSelected? onRemoveCallback)
         {
             if (MerchantChanges.IsPopulatingShop)
             {
                 HandleUpgradeIcon(__instance, artifactModel.ArtifactName);
+            }
+
+            if (artifactModel.baseId.StartsWith("Token") &&
+                __instance.GetComponentInParent<RogueMerchantPanel>().Is(out var panel))
+            {
+                if (onAddCallback != null)
+                {
+                    var button = __instance.stackCountObj.GetComponentOrAdd<Button>();
+                    button.targetGraphic = __instance.stackCountObj.GetComponentInChildren<Image>();
+                    button.SetOnClick(() =>
+                    {
+                        var count = __instance.StackCount;
+                        var ourPower = panel.GetTotalPower(panel.selectedInventoryArtifactIcons, false);
+                        var merchantPower = panel.GetTotalPower(panel.selectedMerchantArtifactIcons, true);
+
+                        if (merchantPower > ourPower && artifactModel.baseId == "Token")
+                        {
+                            for (var i = 0; i < Math.Min(merchantPower - ourPower, count); i++)
+                            {
+                                onAddCallback.Invoke(__instance);
+                            }
+                        }
+                        else
+                        {
+                            for (var i = 0; i < count; i++)
+                            {
+                                onAddCallback.Invoke(__instance);
+                            }
+
+                        }
+                    });
+                }
+
+                if (onRemoveCallback != null)
+                {
+                    var button = __instance.stackCountObj.GetComponentOrAdd<Button>();
+                    button.targetGraphic = __instance.stackCountObj.GetComponentInChildren<Image>();
+                    button.SetOnClick(() =>
+                    {
+                        var count = __instance.StackCount;
+                        var ourPower = panel.GetTotalPower(panel.selectedInventoryArtifactIcons, false);
+                        var merchantPower = panel.GetTotalPower(panel.selectedMerchantArtifactIcons, true);
+
+                        if (ourPower > merchantPower && artifactModel.baseId == "Token")
+                        {
+                            for (var i = 0; i < Math.Min(ourPower - merchantPower, count); i++)
+                            {
+                                onRemoveCallback.Invoke(__instance);
+                            }
+                        }
+                        else
+                        {
+                            for (var i = 0; i < count; i++)
+                            {
+                                onRemoveCallback.Invoke(__instance);
+                            }
+                        }
+
+                    });
+                }
             }
         }
     }

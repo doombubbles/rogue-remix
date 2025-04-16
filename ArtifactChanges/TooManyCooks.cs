@@ -4,6 +4,8 @@ namespace RogueRemix.ArtifactChanges;
 
 public class TooManyCooks : ModVanillaArtifact
 {
+    public override string MetaDescription => "Internal stack size limited so it's never net negative";
+
     public override void ModifyArtifact(ItemArtifactModel artifact)
     {
         artifact.GetDescendant<RateSupportModel>().maxStackSize = artifact.tier switch

@@ -11,6 +11,8 @@ public class SwellingSpikes : ModVanillaArtifact
     public override string Description3 =>
         "Spike Factories attack half as fast, but have 170% more pierce. Adds a 2-0-0 Spike Factory to your Party";
 
+    public override string MetaDescription => "Pierce buff increased";
+
     public override void ModifyArtifact(ItemArtifactModel artifact)
     {
         var boost = artifact.GetDescendant<RateBoostBehaviorModel>();

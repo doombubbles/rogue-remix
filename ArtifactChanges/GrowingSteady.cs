@@ -7,6 +7,8 @@ public class GrowingSteady : ModVanillaArtifact
     public override string Description(string description, int tier) => description
         .Replace("Druids attack 17% slower, but e", "E");
 
+    public override string? MetaDescription => "Attack speed downside removed";
+
     public override void ModifyArtifact(ItemArtifactModel artifact)
     {
         artifact.GetDescendant<RateBoostBehaviorModel>().multiplier = 1f;

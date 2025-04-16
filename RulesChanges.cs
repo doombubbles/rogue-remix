@@ -1,13 +1,19 @@
 ﻿using System.Linq;
 using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Api.Legends;
+using BTD_Mod_Helper.Extensions;
 using HarmonyLib;
 using Il2CppAssets.Scripts.Data;
 using Il2CppAssets.Scripts.Data.Legends;
+using Il2CppAssets.Scripts.Models;
 using Il2CppAssets.Scripts.Models.Artifacts;
+using Il2CppAssets.Scripts.Models.Towers.Projectiles;
+using Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors;
+using Il2CppAssets.Scripts.Simulation.Artifacts.Behaviors;
 using Il2CppAssets.Scripts.Unity.UI_New.GameOver;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using Il2CppAssets.Scripts.Unity.UI_New.Legends;
+using Il2CppSystem.IO;
 
 namespace RogueRemix;
 
@@ -79,6 +85,54 @@ public static class RulesChanges
             {
                 // rogueLootData.bossType = rogueData.boss.ToString();
             }
+        }
+    }
+
+    public static void ApplyDamageToModifiers(Model model, float multiplier)
+    {
+        if (!RogueRemixMod.DamageBoostsAffectModifiers) return;
+
+        foreach (var modifier in model.GetDescendants<DamageModifierModel>().ToArray())
+        {
+            if (modifier.Is(out DamageModifierForTagModel tag))
+            {
+                tag.damageAddative *= multiplier;
+            }
+            else if (modifier.Is(out DamageModifierForBloonTypeModel bloonType))
+            {
+                bloonType.damageAdditive *= multiplier;
+            }
+            else if (modifier.Is(out DamageModifierForBloonStateModel bloonState))
+            {
+                bloonState.damageAdditive *= multiplier;
+            }
+            else if (modifier.Is(out DamageModifierForModifiersModel modifiers))
+            {
+                modifiers.damageAddative *= multiplier;
+            }
+            else if (modifier.Is(out DamageModifierForRoundModel round))
+            {
+                round.damagePerRound *= multiplier;
+            }
+        }
+
+        /*foreach (var bonus in model.GetDescendants<AddBonusDamagePerHitToBloonModel>().ToArray())
+        {
+            bonus.perHitDamageAddition *= multiplier;
+        }*/
+    }
+
+    /// <summary>
+    /// Make Damage boosts also affect additive damage modifiers on towers
+    /// </summary>
+    [HarmonyPatch(typeof(DamageBoostBehavior.DamageBoostMutator),
+        nameof(DamageBoostBehavior.DamageBoostMutator.Mutate))]
+    internal static class DamageBoostMutator_Mutate
+    {
+        [HarmonyPostfix]
+        internal static void Postfix(DamageBoostBehavior.DamageBoostMutator __instance, Model model)
+        {
+            ApplyDamageToModifiers(model, __instance.multiplier);
         }
     }
 }

@@ -13,6 +13,8 @@ public class IntelligenceAgent : ModVanillaArtifact
     public override string Description3 =>
         "Heroes give Monkey Intelligence Bureau buff to nearby Monkeys (can hit all Bloon types)";
 
+    public override string MetaDescription => "Attack speed downside is now a range downside";
+
     public override void ModifyArtifact(ItemArtifactModel artifact)
     {
         var addBehaviors = artifact.GetDescendant<AddTowerBehaviorsArtifactModel>();

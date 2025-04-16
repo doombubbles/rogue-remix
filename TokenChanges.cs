@@ -107,6 +107,32 @@ public static class TokenChanges
                     }
                     __result.AddRange(boosts.Cast<IEnumerable<ArtifactLoot>>());
                 }
+
+                var rogueData = GameData.Instance.rogueData;
+                if (RogueRemixMod.AlwaysStockXpAndMM &&
+                    (__instance.RogueSaveData.stage == 0 ||
+                     __instance.RogueSaveData.stage > rogueData.campaignStageCount))
+                {
+                    for (var i = 0; i < rogueData.merchantMMTokenCount; i++)
+                    {
+                        __result.Add(new ArtifactLoot
+                        {
+                            baseId = "TokenMonkeyMoney",
+                            artifactName = "TokenMonkeyMoney",
+                            lootType = RogueLootType.permanent
+                        });
+                    }
+
+                    for (var i = 0; i < rogueData.merchantXpTokenCount; i++)
+                    {
+                        __result.Add(new ArtifactLoot
+                        {
+                            baseId = "TokenRogueXp",
+                            artifactName = "TokenRogueXp",
+                            lootType = RogueLootType.permanent
+                        });
+                    }
+                }
             }
             else
             {

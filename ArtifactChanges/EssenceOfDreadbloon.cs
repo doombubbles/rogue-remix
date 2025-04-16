@@ -10,6 +10,8 @@ public class EssenceOfDreadbloon : ModVanillaArtifact
     public override string Description(string description, int tier) =>
         description.Replace("Tier 5 Monkeys and level 20 Heroes", "Heroes and Tier 5 Monkeys");
 
+    public override string MetaDescription => "Hero level 20 restriction removed";
+
     public override void ModifyArtifact(ItemArtifactModel artifact)
     {
         artifact.GetDescendants<AddProjectileBehaviorsArtifactModel>().ForEach(model =>

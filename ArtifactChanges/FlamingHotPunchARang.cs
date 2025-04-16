@@ -9,10 +9,12 @@ namespace RogueRemix.ArtifactChanges;
 
 public class FlamingHotPunchARang : ModVanillaArtifact
 {
-    public override string? DisplayName(string name) => name.Replace("-A-Rang", "");
+    public override string DisplayName(string name) => name.Replace("-A-Rang", "");
 
     public override string Description(string description, int tier) =>
         description.Replace("Red Hot Rangs", "Red Hot Rangs, White Hot Spikes, Hot Shots, and Heat-tipped Darts");
+
+    public override string MetaDescription => "Renamed, applies also to White Hot Spikes, Hot Shots, and Heat-tipped Darts";
 
     public override void ModifyArtifact(ItemArtifactModel artifact)
     {

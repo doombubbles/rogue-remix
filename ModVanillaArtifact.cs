@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api;
-using BTD_Mod_Helper.Api.Data;
+using BTD_Mod_Helper.Api.ModOptions;
 using BTD_Mod_Helper.Extensions;
 using HarmonyLib;
 using Il2CppAssets.Scripts.Data;
@@ -11,7 +11,7 @@ namespace RogueRemix;
 
 public abstract class ModVanillaArtifact : NamedModContent
 {
-    private static Dictionary<string, ModVanillaArtifact> Cache = new();
+    internal static readonly Dictionary<string, ModVanillaArtifact> Cache = new();
 
     /// <summary>
     /// Tier for Common Artifacts
@@ -35,6 +35,8 @@ public abstract class ModVanillaArtifact : NamedModContent
     public virtual string? Description3 => null;
     public virtual string? DescriptionX => null;
 
+    public abstract string? MetaDescription { get; }
+
     public new virtual string? Description(string description, int tier) => tier switch
     {
         0 => Description1,
@@ -43,10 +45,19 @@ public abstract class ModVanillaArtifact : NamedModContent
         _ => DescriptionX
     };
 
+    public string BaseDisplayName => base.DisplayName;
+
     public new virtual string? DisplayName(string name) => null;
+
+
 
     public sealed override void Register()
     {
+        if (mod.ModSettings.TryGetValue(Name, out var setting) && setting is ModSettingBool settingBool && !settingBool)
+        {
+            return;
+        }
+
         var artifactsData = GameData.Instance.artifactsData;
 
         var count = 0;

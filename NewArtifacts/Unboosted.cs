@@ -49,20 +49,4 @@ public class Unboosted : ModItemArtifact
             tower.GetDescendants<DamageModel>().ForEach(model => model.damage *= amount);
         }
     }
-
-    [HarmonyPatch(typeof(LegendsManager), nameof(LegendsManager.HasArtifactInLootPoolAlready))]
-    internal static class LegendsManager_HasArtifactInLootPoolAlready
-    {
-        [HarmonyPrefix]
-        internal static bool Prefix(LegendsManager __instance, ArtifactModelBase artifactModel, ref bool __result)
-        {
-            if (!RogueRemixMod.BoostsInShop && artifactModel.baseId.Contains(nameof(Unboosted)))
-            {
-                __result = true;
-                return false;
-            }
-
-            return true;
-        }
-    }
 }
