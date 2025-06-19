@@ -43,7 +43,7 @@ public class TonsOfDamage : ModItemArtifact
         {
             if (__instance.id == "ArtifactRateBoost" &&
                 InGame.instance?.GameType == GameType.Rogue &&
-                LegendsManager.instance.RogueSaveData.HasArtifact<TonsOfDamage>())
+                RogueLegendsManager.instance.RogueSaveData.HasArtifact<TonsOfDamage>())
             {
                 __result = true;
 

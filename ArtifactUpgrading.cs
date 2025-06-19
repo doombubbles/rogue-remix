@@ -22,7 +22,7 @@ public static class ArtifactUpgrading
     public static void HandleUpgradeIcon(RogueArtifactDisplayIcon icon, string artifactName)
     {
         if (!RogueRemixMod.ArtifactUpgrading ||
-            LegendsManager.instance?.RogueSaveData == null ||
+            RogueLegendsManager.instance?.RogueSaveData == null ||
             artifactName.Contains("BoostArtifact") ||
             artifactName.StartsWith("Token")) return;
 
@@ -41,15 +41,15 @@ public static class ArtifactUpgrading
 
         upgradeIcon.SetActive(!PopulatingOwned &&
                               artifactName != "Token" &&
-                              LegendsManager.instance.RogueSaveData.artifactsInventory.Any(loot =>
+                              RogueLegendsManager.instance.RogueSaveData.artifactsInventory.Any(loot =>
                                   loot.artifactName == artifactName));
     }
 
     /// <summary>
     /// Allow duplicates of the same tier to appear
     /// </summary>
-    [HarmonyPatch(typeof(LegendsManager), nameof(LegendsManager.CheckIfArtifactOwned))]
-    internal static class LegendsManager_CheckIfArtifactOwned
+    [HarmonyPatch(typeof(RogueLegendsManager), nameof(RogueLegendsManager.CheckIfArtifactOwned))]
+    internal static class RogueLegendsManager_CheckIfArtifactOwned
     {
         [HarmonyPrefix]
         internal static void Prefix(ref int tier)

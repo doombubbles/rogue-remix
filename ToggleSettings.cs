@@ -163,11 +163,11 @@ public class ToggleSettings : ModContent, IModSettings
         }
     }
 
-    [HarmonyPatch(typeof(LegendsManager), nameof(LegendsManager.HasArtifactInLootPoolAlready))]
-    internal static class LegendsManager_HasArtifactInLootPoolAlready
+    [HarmonyPatch(typeof(RogueLegendsManager), nameof(RogueLegendsManager.HasArtifactInLootPoolAlready))]
+    internal static class RogueLegendsManager_HasArtifactInLootPoolAlready
     {
         [HarmonyPrefix]
-        internal static bool Prefix(LegendsManager __instance, ArtifactModelBase artifactModel, ref bool __result)
+        internal static bool Prefix(RogueLegendsManager __instance, ArtifactModelBase artifactModel, ref bool __result)
         {
             if (!RogueRemixMod.BoostsInShop && artifactModel.baseId.Contains(nameof(Unboosted)) ||
                 Cache.TryGetValue(artifactModel.ArtifactName, out var setting) && !setting)

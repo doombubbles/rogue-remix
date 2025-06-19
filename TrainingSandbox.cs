@@ -9,7 +9,9 @@ public static class TrainingSandbox
 {
     private static bool training;
 
-    [HarmonyPatch(typeof(LegendsMainMenuScreen), nameof(LegendsMainMenuScreen.PlayTrainingModeClicked))]
+    // TODO fix training sandbox mode
+
+    /*[HarmonyPatch(typeof(LegendsMainMenuScreen), nameof(LegendsMainMenuScreen.PlayTrainingModeClicked))]
     internal static class LegendsMainMenuScreen_PlayTrainingModeClicked
     {
         [HarmonyPrefix]
@@ -39,7 +41,7 @@ public static class TrainingSandbox
         {
             training = false;
         }
-    }
+    }*/
 
     [HarmonyPatch(typeof(InGameData), nameof(InGameData.SetupRogueGame))]
     internal static class InGameData_SetupRogueGame

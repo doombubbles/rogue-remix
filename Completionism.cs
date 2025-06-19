@@ -13,11 +13,11 @@ namespace RogueRemix;
 
 public static class Completionism
 {
-    [HarmonyPatch(typeof(LegendsManager), nameof(LegendsManager.IncreaseRogueStage))]
-    internal static class LegendsManager_IncreaseRogueStage
+    [HarmonyPatch(typeof(RogueLegendsManager), nameof(RogueLegendsManager.IncreaseRogueStage))]
+    internal static class RogueLegendsManager_IncreaseRogueStage
     {
         [HarmonyPostfix]
-        internal static void Postfix(LegendsManager __instance)
+        internal static void Postfix(RogueLegendsManager __instance)
         {
             if (!RogueRemixMod.TrackHeroLoadoutCompletions) return;
 

@@ -30,7 +30,8 @@ public class MainCharacter : ModItemArtifact
     {
         artifactModel.AddBehavior(new CountAllCategoriesBehaviorModel("",
             new Il2CppStructArray<TowerSet>([TowerSet.Hero]),
-            new Il2CppStructArray<TowerSet>([TowerSet.Primary, TowerSet.Military, TowerSet.Magic, TowerSet.Support])));
+            new Il2CppStructArray<TowerSet>([TowerSet.Primary, TowerSet.Military, TowerSet.Magic, TowerSet.Support]),
+            false, new Il2CppStringArray(0), false, new Il2CppStructArray<int>(0), false, false));
 
         artifactModel.AddBoostBehavior(new RangeBoostBehaviorModel("", 1 - Effect(artifactModel.tier)), boost =>
             boost.towerSets = new Il2CppStructArray<TowerSet>([TowerSet.Hero]));

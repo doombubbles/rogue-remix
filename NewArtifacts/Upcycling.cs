@@ -28,20 +28,20 @@ public class Upcycling : ModMapArtifact
 
     public static bool Handle(ArtifactModelBase artifactModel)
     {
-        if (!LegendsManager.instance.RogueSaveData.HasArtifact<Upcycling>() ||
+        if (!RogueLegendsManager.instance.RogueSaveData.HasArtifact<Upcycling>() ||
             artifactModel.IsArtifact<Upcycling>() ||
             artifactModel.IsBoost)
         {
             return false;
         }
 
-        var boost = LegendsManager.instance.GetRandomArtifacts(1, RogueLootType.boost, 0,
-            LegendsManager.instance.RogueSaveData.seed +
-            (int) (LegendsManager.instance.RogueSaveData.currentPosition?.GetValueOrDefault().magnitude ?? 0) +
+        var boost = RogueLegendsManager.instance.GetRandomArtifacts(1, RogueLootType.boost, 0,
+            RogueLegendsManager.instance.RogueSaveData.seed +
+            (int) (RogueLegendsManager.instance.RogueSaveData.currentPosition?.GetValueOrDefault().magnitude ?? 0) +
             artifactModel.ArtifactName.GetHashCode(), 0).First();
         boost.lootType = RogueLootType.permanent;
 
-        LegendsManager.instance.RogueSaveData.AddArtifactToInventory(boost, true);
+        RogueLegendsManager.instance.RogueSaveData.AddArtifactToInventory(boost, true);
         PopupScreen.instance.ShowRogueRewardPopup(new Action(() => { }), boost, false);
 
         return true;

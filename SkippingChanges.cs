@@ -49,7 +49,7 @@ public static class SkippingChanges
                     .First(transform => transform.name == "Cost")
                     .gameObject.active)
             {
-                var rogueSaveData = LegendsManager.instance.RogueSaveData;
+                var rogueSaveData = RogueLegendsManager.instance.RogueSaveData;
                 rogueSaveData.lives++;
                 rogueSaveData.unseenLivesLost--;
                 rogueSaveData.currentStageStats.heartsLost--;

@@ -25,7 +25,7 @@ public class ArtifactCommand : ModCommand
     public override string Command => "artifact";
     public override string Help => "deals with artifacts";
 
-    public override bool IsAvailable => LegendsManager.instance?.RogueSaveData != null;
+    public override bool IsAvailable => RogueLegendsManager.instance?.RogueSaveData != null;
 
     public override bool Execute(ref string resultText) => ExplainSubcommands(out resultText);
 }
@@ -43,7 +43,7 @@ public class ArtifactTestCommand : ModCommand<ArtifactCommand>
         var commonCount = 0;
         for (var i = 0; i < 1e6; i++)
         {
-            var tier = LegendsManager.instance.GetRandomArtifactTier(rand);
+            var tier = RogueLegendsManager.instance.GetRandomArtifactTier(rand);
             switch (tier)
             {
                 case 2:
@@ -125,7 +125,7 @@ public class GiveSpecificArtifactCommand : ModCommand<GiveArtifactCommand>
         {
             for (var i = 0; i < Amount; i++)
             {
-                LegendsManager.instance.RogueSaveData.AddArtifactToInventory(loot, true);
+                RogueLegendsManager.instance.RogueSaveData.AddArtifactToInventory(loot, true);
             }
             PopupScreen.instance.ShowRogueRewardPopup(new Action(() => { }), loot, false, Amount);
 
@@ -151,7 +151,7 @@ public class InstaCommand : ModCommand
 
     public override string Help => "Deals with rogue instas";
 
-    public override bool IsAvailable => LegendsManager.instance?.RogueSaveData != null;
+    public override bool IsAvailable => RogueLegendsManager.instance?.RogueSaveData != null;
 
     public override bool Execute(ref string resultText) => ExplainSubcommands(out resultText);
 }
@@ -200,7 +200,7 @@ public class GiveSpecificInstaCommand : ModCommand<GiveInstaCommand>
                 lootType = InGame.instance != null ? RogueLootType.boost : RogueLootType.permanent,
                 tiers = new Il2CppStructArray<int>([Top, Mid, Bot]),
                 currentCooldown = 0,
-                uniqueId = LegendsManager.instance.GetNextInstaUniqueId()
+                uniqueId = RogueLegendsManager.instance.GetNextInstaUniqueId()
             };
 
             if (InGame.instance != null)
@@ -210,7 +210,7 @@ public class GiveSpecificInstaCommand : ModCommand<GiveInstaCommand>
             }
             else
             {
-                LegendsManager.instance.AddInstaToInventory(insta);
+                RogueLegendsManager.instance.AddInstaToInventory(insta);
             }
         }
         catch (Exception e)

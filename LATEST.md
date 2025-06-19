@@ -1,6 +1,7 @@
+- Fixed for BTD6 v49
 - Added a new setting Damage Boosts Affect Modifiers (default On)
     - By default, damage bonuses from boosts and artifacts don't affect additive modifiers like what Moab Maulers have.
-      This settings makes them be affected.
+      This setting makes them be affected.
 - Added a new setting Always Stock Xp And MM (default On)
   - Makes merchants also stock the Rogue XP and Monkey Money tokens on stage 1 and after stage 4
 - In the Merchant window, clicking on the stack count icon of a Token will automatically add as many as it takes to balance the trade / all of them depending on the context

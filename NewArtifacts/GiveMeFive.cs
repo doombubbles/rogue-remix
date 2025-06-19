@@ -45,12 +45,12 @@ public class GiveMeFive : ModItemArtifact
         }
     }
 
-    [HarmonyPatch(typeof(LegendsManager), nameof(LegendsManager.GetInstaIngameCost), typeof(string),
+    [HarmonyPatch(typeof(RogueLegendsManager), nameof(RogueLegendsManager.GetInstaIngameCost), typeof(string),
         typeof(Il2CppStructArray<int>), typeof(RogueLootType))]
-    internal static class LegendsManager_GetInstaIngameCost
+    internal static class RogueLegendsManager_GetInstaIngameCost
     {
         [HarmonyPostfix]
-        internal static void Postfix(LegendsManager __instance, Il2CppStructArray<int> tiers, ref float __result)
+        internal static void Postfix(RogueLegendsManager __instance, Il2CppStructArray<int> tiers, ref float __result)
         {
             if (tiers.Contains(5) && __instance.RogueSaveData.HasArtifact<GiveMeFive>())
             {

@@ -58,7 +58,7 @@ public static class TokenChanges
         };
         for (var i = 0; i < amount; i++)
         {
-            LegendsManager.instance.RogueSaveData.AddArtifactToInventory(tokenLoot, true);
+            RogueLegendsManager.instance.RogueSaveData.AddArtifactToInventory(tokenLoot, true);
         }
 
         PopupScreen.instance.ShowRogueRewardPopup(callback ?? new Action(() => { }), tokenLoot, false, amount);
@@ -67,8 +67,8 @@ public static class TokenChanges
     /// <summary>
     /// Add fallback tokens to random loot
     /// </summary>
-    [HarmonyPatch(typeof(LegendsManager), nameof(LegendsManager.GetRandomLoot))]
-    internal static class LegendsManager_GetRandomLoot
+    [HarmonyPatch(typeof(RogueLegendsManager), nameof(RogueLegendsManager.GetRandomLoot))]
+    internal static class RogueLegendsManager_GetRandomLoot
     {
         [HarmonyPostfix]
         internal static void Postfix(RogueLootData rogueLootData, ref List<RogueLoot> __result)
@@ -86,11 +86,11 @@ public static class TokenChanges
     /// <summary>
     /// Add fallback tokens to random artifacts
     /// </summary>
-    [HarmonyPatch(typeof(LegendsManager), nameof(LegendsManager.GetRandomArtifacts))]
-    internal static class LegendsManager_GetRandomArtifacts
+    [HarmonyPatch(typeof(RogueLegendsManager), nameof(RogueLegendsManager.GetRandomArtifacts))]
+    internal static class RogueLegendsManager_GetRandomArtifacts
     {
         [HarmonyPostfix]
-        internal static void Postfix(LegendsManager __instance, ref List<ArtifactLoot> __result, RogueLootType type,
+        internal static void Postfix(RogueLegendsManager __instance, ref List<ArtifactLoot> __result, RogueLootType type,
             int tileSeed, int guaranteedLegendary)
         {
             if (type != RogueLootType.permanent) return;
@@ -199,7 +199,7 @@ public static class TokenChanges
             if (artifact is {artifactName: "Token", tier: > 0})
             {
                 RewardTokens(artifact.tier, __instance.onRewardScreenClosedCallback);
-                LegendsManager.instance.CheckFeats();
+                RogueLegendsManager.instance.CheckFeats();
                 __instance.canHide = true;
                 __instance.OKClicked();
                 return false;
