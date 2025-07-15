@@ -130,10 +130,7 @@ public static class ArtifactSelling
 
             if (artifactModel.baseId == "Token") return true;
 
-            if (!Upcycling.Handle(artifactModel))
-            {
-                TokenChanges.RewardTokens(artifactModel.ArtifactPower);
-            }
+            TokenChanges.RewardTokens(artifactModel.ArtifactPower);
 
             return true;
         }

@@ -28,10 +28,6 @@ public class CamoBeGone : ModItemArtifact
 
     public override bool SmallIcon => true;
 
-    public CamoBeGone(int lol)
-    {
-    }
-
     public override void ModifyArtifactModel(ItemArtifactModel artifactModel)
     {
     }

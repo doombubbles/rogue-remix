@@ -9,39 +9,37 @@ public static class TrainingSandbox
 {
     private static bool training;
 
-    // TODO fix training sandbox mode
-
-    /*[HarmonyPatch(typeof(LegendsMainMenuScreen), nameof(LegendsMainMenuScreen.PlayTrainingModeClicked))]
-    internal static class LegendsMainMenuScreen_PlayTrainingModeClicked
+    [HarmonyPatch(typeof(RogueNewGameScreen), nameof(RogueNewGameScreen.PlayTrainingModeClicked))]
+    internal static class RogueNewGameScreen_PlayTrainingModeClicked
     {
         [HarmonyPrefix]
-        internal static void Prefix(LegendsMainMenuScreen __instance)
+        internal static void Prefix()
         {
             training = true;
         }
 
         [HarmonyPostfix]
-        internal static void Postfix(LegendsMainMenuScreen __instance)
+        internal static void Postfix()
         {
             training = false;
         }
     }
 
-    [HarmonyPatch(typeof(LegendsMainMenuScreen), nameof(LegendsMainMenuScreen.ContinueTrainingMode))]
-    internal static class LegendsMainMenuScreen_ContinueTrainingMode
+    [HarmonyPatch(typeof(RogueNewGameScreen), nameof(RogueNewGameScreen.ContinueTrainingMode))]
+    internal static class RogueNewGameScreen_ContinueTrainingMode
     {
         [HarmonyPrefix]
-        internal static void Prefix(LegendsMainMenuScreen __instance)
+        internal static void Prefix()
         {
             training = true;
         }
 
         [HarmonyPostfix]
-        internal static void Postfix(LegendsMainMenuScreen __instance)
+        internal static void Postfix()
         {
             training = false;
         }
-    }*/
+    }
 
     [HarmonyPatch(typeof(InGameData), nameof(InGameData.SetupRogueGame))]
     internal static class InGameData_SetupRogueGame
