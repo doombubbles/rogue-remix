@@ -52,20 +52,20 @@ public static class BoostChanges
     internal static class SpreadBoostMutator_Mutate
     {
         [HarmonyPrefix]
-        internal static void Prefix(Model model, ref List<ArcEmissionModel> __state)
+        internal static void Prefix(Model model, ref Dictionary<ArcEmissionModel, float> __state)
         {
             __state = model.GetDescendants<ArcEmissionModel>()
                 .ToArray()
-                .Where(emissionModel => emissionModel.angle >= 360f)
-                .ToList();
+                .Where(emissionModel => emissionModel.angle >= 180f)
+                .ToDictionary(emissionModel => emissionModel, emissionModel => emissionModel.angle);
         }
 
         [HarmonyPostfix]
-        internal static void Postfix(Model model, ref List<ArcEmissionModel> __state)
+        internal static void Postfix(Model model, ref Dictionary<ArcEmissionModel, float> __state)
         {
-            foreach (var arcEmissionModel in __state)
+            foreach (var (arcEmissionModel, angle) in __state)
             {
-                arcEmissionModel.angle = 360f;
+                arcEmissionModel.angle = angle;
             }
         }
     }
@@ -79,10 +79,7 @@ public static class BoostChanges
         [HarmonyPrefix]
         internal static void Prefix(OverrideCamoDetection __instance)
         {
-            if (__instance.tower.IsParagonBased())
-            {
-                __instance.mutator.isArtifactMutator = true;
-            }
+            __instance.mutator.isArtifactMutator = true;
         }
     }
 }

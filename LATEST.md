@@ -1,4 +1,1 @@
-- Based on the artifact changes with BTD6 v49, the Essence artifacts and Mighty Mulligan are no longer changed by this mod
-- Fixed a base game bug where shot spread reducing artifacts could make Tack Shooters not be 360 degrees
-- Fixed a base game bug where the Essence of Phayze camo detection would not work for paragons
-- Fixed the Training Sandbox Mode setting
+- Further fixed interactions with the Tack Shooter Paragon
