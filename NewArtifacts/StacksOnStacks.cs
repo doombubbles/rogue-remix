@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BTD_Mod_Helper.Api.Enums;
 using BTD_Mod_Helper.Api.Legends;
 using BTD_Mod_Helper.Extensions;
@@ -47,6 +48,24 @@ public class StacksOnStacks : ModItemArtifact
             towerModel.GetDescendants<SupportModel>().ForEach(supportModel =>
             {
                 supportModel.maxStackSize = size * Math.Max(supportModel.maxStackSize, 1);
+
+                supportModel.GetIl2CppType()
+                    .GetField("isUnique", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+                    ?.SetValue(supportModel, false);
+
+                if (supportModel.GetBuffIndicatorModel().Is(out var buffIndicatorModel))
+                {
+                    buffIndicatorModel.stackable = true;
+                    buffIndicatorModel.maxStackSize = size * Math.Max(buffIndicatorModel.maxStackSize, 1);
+                }
+            });
+
+            towerModel.GetDescendants<TowerBehaviorBuffModel>().ForEach(supportModel =>
+            {
+                supportModel.maxStackSize = size * Math.Max(supportModel.maxStackSize, 1);
+                supportModel.GetIl2CppType()
+                    .GetField("maxStacks", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+                    ?.SetValue(supportModel, supportModel.maxStackSize);
 
                 supportModel.GetIl2CppType()
                     .GetField("isUnique", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Api.Enums;
 using BTD_Mod_Helper.Api.Legends;
 using HarmonyLib;
@@ -15,6 +17,8 @@ public class ArtifactExpansion : ModBoostArtifact
 
     public override string Icon => VanillaSprites.ArtifactPowerIcon;
     public override bool SmallIcon => true;
+
+    public override IEnumerable<ModContent> Load() => RogueRemixMod.BoostsInShop ? base.Load() : [];
 
     public override void ModifyArtifactModel(BoostArtifactModel artifactModel)
     {

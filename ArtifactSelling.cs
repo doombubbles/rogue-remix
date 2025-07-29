@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Extensions;
 using HarmonyLib;
@@ -8,7 +7,6 @@ using Il2CppAssets.Scripts.Unity.UI_New.Legends;
 using Il2CppAssets.Scripts.Unity.UI_New.Popups;
 using Il2CppInterop.Runtime;
 using Il2CppNinjaKiwi.Common;
-using RogueRemix.NewArtifacts;
 using UnityEngine;
 using UnityEngine.UI;
 

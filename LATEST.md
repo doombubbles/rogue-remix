@@ -1,1 +1,2 @@
-- Further fixed interactions with the Tack Shooter Paragon
+- Artifact Expansion and Cash Injection are now only available when the Boosts in Shop setting is turned on
+- Stacks on Stacks now correctly affects Shinobi Tactics / Poplust again

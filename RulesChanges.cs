@@ -123,6 +123,19 @@ public static class RulesChanges
     }
 
     /// <summary>
+    /// Apply BoostsInShop rules changes
+    /// </summary>
+    [HarmonyPatch(typeof(RogueLegendsManager), nameof(RogueLegendsManager.InitRogueRun))]
+    internal static class RogueLegendsManager_InitRogueRun
+    {
+        [HarmonyPostfix]
+        internal static void Postfix(RogueLegendsManager __instance)
+        {
+            __instance.RogueSaveData.modifiers.boostsDisabled |= RogueRemixMod.BoostsInShop;
+        }
+    }
+
+    /// <summary>
     /// Make Damage boosts also affect additive damage modifiers on towers
     /// </summary>
     [HarmonyPatch(typeof(DamageBoostBehavior.DamageBoostMutator),
