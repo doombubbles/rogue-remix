@@ -1,2 +1,3 @@
-- Artifact Expansion and Cash Injection are now only available when the Boosts in Shop setting is turned on
-- Stacks on Stacks now correctly affects Shinobi Tactics / Poplust again
+- Because of an issue with the public profile, Rogue Remix extra completion data is migrating from being stored within your profile to just being stored locally
+  - This will happen automatically the first time you open the game with the new mod version
+  - To transfer data across devices, copy over the `BloonsTD6/Btd6ModHelper/Mod Settings/RogueRemix.json` file

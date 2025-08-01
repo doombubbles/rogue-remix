@@ -17,12 +17,14 @@ using Il2CppAssets.Scripts.Data.Artifacts;
 using Il2CppAssets.Scripts.Models;
 using Il2CppAssets.Scripts.Models.Artifacts;
 using Il2CppAssets.Scripts.Models.Artifacts.Behaviors;
+using Il2CppAssets.Scripts.Models.Profile;
 using Il2CppAssets.Scripts.Simulation;
 using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using Il2CppAssets.Scripts.Unity.UI_New.Legends;
 using Il2CppAssets.Scripts.Unity.UI_New.Popups;
 using Il2CppNinjaKiwi.Common.ResourceUtils;
+using Newtonsoft.Json.Linq;
 using RogueRemix;
 using UnityEngine;
 
@@ -81,24 +83,21 @@ public class RogueRemixMod : BloonsTD6Mod
 
     public static readonly ModSettingBool TrackHeroLoadoutCompletions = new(true)
     {
-        description = "Saves info for displaying the completionist loadout borders. " +
-                      "This is stored in an innocuous spot within your BTD6 profile data, " +
-                      "but if you don't want any data stored you can disable this."
+        description = "Saves info for displaying the completionist loadout borders."
     };
 
     public static readonly ModSettingButton ClearHeroCompletionData = new(() =>
     {
         PopupScreen.instance.SafelyQueue(screen => screen.ShowPopup(PopupScreen.Placement.menuCenter, "Clear Data",
-            "This will clear your completion history from your profile and can't be easily undone.", new Action(
-                () =>
-                {
-                    Game.Player.Data.LegendsData.savedLegendsStats.Remove(nameof(RogueRemix));
-                    Game.Player.Save();
-                }), "OK", null, "Cancel",
+            "This will clear your completion history for.", new Action(() =>
+            {
+                Completionism.RogueRemixStats.Clear();
+                ModContent.GetInstance<RogueRemixMod>().SaveModSettings();
+            }), "OK", null, "Cancel",
             Popup.TransitionAnim.Scale));
     })
     {
-        description = "Use this to remove all hero completion data from your BTD6 profile."
+        description = "Use this to remove all hero completion data."
     };
 
     public static readonly ModSettingBool TrainingSandboxMode = new(false)
@@ -150,6 +149,49 @@ public class RogueRemixMod : BloonsTD6Mod
             var tier = artifactsInventory.FirstOrDefault(loot => loot.baseId.Contains(modArtifact.Id))?.tier ?? -1;
 
             artifactSynergy.ModifyOtherArtifacts(artifacts, tier);
+        }
+    }
+
+    public override void OnSaveSettings(JObject settings)
+    {
+        var jObject = settings[nameof(Completionism)] = new JObject();
+
+        foreach (var (stat, value) in Completionism.RogueRemixStats)
+        {
+            jObject[stat] = value;
+        }
+    }
+
+    public override void OnLoadSettings(JObject settings)
+    {
+        if (!settings.TryGetValue(nameof(Completionism), out var completionism) ||
+            completionism is not JObject jObject) return;
+
+        foreach (var (key, value) in jObject)
+        {
+            if (value is not JValue {Value: bool b}) continue;
+            Completionism.RogueRemixStats[key] = b;
+        }
+    }
+
+    public override void OnProfileLoaded(ProfileModel result)
+    {
+        try
+        {
+            if (result.legendsData?.savedLegendsStats?.TryGetValue(nameof(RogueRemix), out var stats) != true) return;
+
+            foreach (var (stat, value) in stats)
+            {
+                Completionism.RogueRemixStats.TryAdd(stat, value);
+            }
+
+            result.legendsData.savedLegendsStats.Remove(nameof(RogueRemix));
+
+            SaveModSettings();
+        }
+        catch (Exception e)
+        {
+            LoggerInstance.Warning(e);
         }
     }
 

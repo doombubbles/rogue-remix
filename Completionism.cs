@@ -1,18 +1,19 @@
-﻿using BTD_Mod_Helper.Api.Enums;
+﻿using System.Collections.Generic;
+using BTD_Mod_Helper.Api;
+using BTD_Mod_Helper.Api.Enums;
 using BTD_Mod_Helper.Extensions;
 using HarmonyLib;
-using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.UI_New.Legends;
 using Il2CppAssets.Scripts.Unity.UI_New.Main.HeroSelect;
-using Il2CppSystem.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.Utilities;
 using UnityEngine.UI;
 
 namespace RogueRemix;
 
 public static class Completionism
 {
+    public static readonly Dictionary<string, bool> RogueRemixStats = new();
+
     [HarmonyPatch(typeof(RogueLegendsManager), nameof(RogueLegendsManager.IncreaseRogueStage))]
     internal static class RogueLegendsManager_IncreaseRogueStage
     {
@@ -22,25 +23,22 @@ public static class Completionism
             if (!RogueRemixMod.TrackHeroLoadoutCompletions) return;
 
             var saveData = __instance.RogueSaveData;
-            var stats = __instance.LegendsData.savedLegendsStats;
-            stats.TryAdd(nameof(RogueRemix), new Dictionary<string, bool>());
 
-            var rogueRemixStats = stats[nameof(RogueRemix)];
-
-            rogueRemixStats[saveData.selectedHeroSkin + "Bronze"] = true;
+            RogueRemixStats[saveData.selectedHeroSkin + "Bronze"] = true;
             if (saveData.stage >= 2)
             {
-                rogueRemixStats[saveData.selectedHeroSkin + "Silver"] = true;
+                RogueRemixStats[saveData.selectedHeroSkin + "Silver"] = true;
             }
             if (saveData.stage >= 4)
             {
-                rogueRemixStats[saveData.selectedHeroSkin + "Gold"] = true;
+                RogueRemixStats[saveData.selectedHeroSkin + "Gold"] = true;
                 if (saveData.isChimps)
                 {
-                    rogueRemixStats[saveData.selectedHeroSkin + "Black"] = true;
+                    RogueRemixStats[saveData.selectedHeroSkin + "Black"] = true;
                 }
             }
-            Game.Player.Save();
+
+            ModContent.GetInstance<RogueRemixMod>().SaveModSettings();
         }
     }
 
@@ -53,29 +51,27 @@ public static class Completionism
             if (!RogueRemixMod.TrackHeroLoadoutCompletions) return;
 
             var image = __instance.rogueLoadoutObj.GetComponent<Image>();
-            if (Game.Player.Data.LegendsData.savedLegendsStats.TryGetValue(nameof(RogueRemix), out var stats))
+
+            image.color = new Color(1, 1, 1);
+            if (RogueRemixStats.GetValueOrDefault(heroId + "Black"))
             {
-                image.color = new Color(1, 1, 1);
-                if (stats.GetValueOrDefault(heroId + "Black"))
-                {
-                    image.SetSprite(VanillaSprites.MainBgPanelHematite);
-                    return;
-                }
-                if (stats.GetValueOrDefault(heroId + "Gold"))
-                {
-                    image.SetSprite(VanillaSprites.MainBGPanelGold);
-                    return;
-                }
-                if (stats.GetValueOrDefault(heroId + "Silver"))
-                {
-                    image.SetSprite(VanillaSprites.MainBGPanelSilver);
-                    return;
-                }
-                if (stats.GetValueOrDefault(heroId + "Bronze"))
-                {
-                    image.SetSprite(VanillaSprites.MainBGPanelBronze);
-                    return;
-                }
+                image.SetSprite(VanillaSprites.MainBgPanelHematite);
+                return;
+            }
+            if (RogueRemixStats.GetValueOrDefault(heroId + "Gold"))
+            {
+                image.SetSprite(VanillaSprites.MainBGPanelGold);
+                return;
+            }
+            if (RogueRemixStats.GetValueOrDefault(heroId + "Silver"))
+            {
+                image.SetSprite(VanillaSprites.MainBGPanelSilver);
+                return;
+            }
+            if (RogueRemixStats.GetValueOrDefault(heroId + "Bronze"))
+            {
+                image.SetSprite(VanillaSprites.MainBGPanelBronze);
+                return;
             }
 
             image.color = new Color(0.706f, 0.663f, 0.588f);
