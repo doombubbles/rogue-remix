@@ -8,6 +8,7 @@ using Il2CppAssets.Scripts.Data;
 using Il2CppAssets.Scripts.Data.Legends;
 using Il2CppAssets.Scripts.Models.Artifacts;
 using Il2CppAssets.Scripts.Simulation.SMath;
+using Il2CppAssets.Scripts.Unity;
 using Il2CppAssets.Scripts.Unity.UI_New.Legends;
 using Il2CppNinjaKiwi.Common;
 using UnityEngine.UI;
@@ -62,7 +63,7 @@ public static class ArtifactUpgrading
     }
 
     /// <summary>
-    /// Handle upgrading when you recieve a duplicate
+    /// Handle upgrading when you recieve a duplicate, selling when you receive an upgrade
     /// </summary>
     [HarmonyPatch(typeof(RogueGameSaveData), nameof(RogueGameSaveData.AddArtifactToInventory))]
     internal static class RogueGameSaveData_AddArtifactToInventory
@@ -87,6 +88,13 @@ public static class ArtifactUpgrading
             {
                 allowStacking = true;
             }
+            else if (!allowStacking)
+            {
+                foreach (var dupe in __instance.artifactsInventory.Where(loot => loot.baseId == artifact.baseId))
+                {
+                    TokenChanges.RewardTokens(dupe.ArtifactPower());
+                }
+            }
         }
     }
 
@@ -107,7 +115,7 @@ public static class ArtifactUpgrading
     }
 
     /// <summary>
-    /// Show upgrade icon
+    /// Show upgrade icon, quick actions for adding/removing all by clicking count
     /// </summary>
     [HarmonyPatch(typeof(RogueArtifactDisplayIcon), nameof(RogueArtifactDisplayIcon.Bind))]
     internal static class RogueArtifactDisplayIcon_Bind
@@ -125,6 +133,8 @@ public static class ArtifactUpgrading
             if (artifactModel.baseId.StartsWith("Token") &&
                 __instance.GetComponentInParent<RogueMerchantPanel>().Is(out var panel))
             {
+                var sound = GameData.Instance.rogueData.rogueUIAudio.selectSound;
+
                 if (onAddCallback != null)
                 {
                     var button = __instance.stackCountObj.GetComponentOrAdd<Button>();
@@ -148,8 +158,9 @@ public static class ArtifactUpgrading
                             {
                                 onAddCallback.Invoke(__instance);
                             }
-
                         }
+
+                        Game.instance.audioFactory.PlaySound(sound, "LegendsArtifactSelectSounds", 1);
                     });
                 }
 
@@ -178,6 +189,7 @@ public static class ArtifactUpgrading
                             }
                         }
 
+                        Game.instance.audioFactory.PlaySound(sound, "LegendsArtifactSelectSounds", 1);
                     });
                 }
             }

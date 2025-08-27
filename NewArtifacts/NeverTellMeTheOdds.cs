@@ -65,11 +65,6 @@ public class NeverTellMeTheOdds : ModItemArtifact, IArtifactSynergy
         {
             addBehavior.chance = Math.Min(1, addBehavior.chance * (1 + Effect(tier)));
         }
-
-        foreach (var createProj in model.GetDescendants<TowerCreateProjectileOnProjectileExhaustModel>().ToArray())
-        {
-            createProj.chance = Math.Min(1, createProj.chance * (1 + Effect(tier)));
-        }
     }
 
     public void ModifyOtherArtifacts(List<ArtifactModelBase> artifacts, int tier)
@@ -83,6 +78,10 @@ public class NeverTellMeTheOdds : ModItemArtifact, IArtifactSynergy
             else if (artifact.HasDescendant(out WindModel wind))
             {
                 wind.chance = IArtifactSynergy.RestoreStore(wind.chance, Name + artifact.ArtifactName + "Wind");
+            }
+            else if (artifact.HasDescendant(out TowerCreateProjectileOnProjectileExhaustModel createProj))
+            {
+                createProj.chance = Math.Min(1, createProj.chance * (1 + Effect(tier)));
             }
             else continue;
 

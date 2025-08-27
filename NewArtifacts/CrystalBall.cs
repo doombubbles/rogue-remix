@@ -55,7 +55,7 @@ public class CrystalBall : ModItemArtifact
 
     public override void ModifyGameModel(GameModel gameModel, int tier)
     {
-        foreach (var model in gameModel.GetTowersWithBaseId(TowerType.WizardMonkey))
+        foreach (var model in gameModel.GetTowersWithBaseId(TowerType.WizardMonkey).AsIEnumerable())
         {
             foreach (var attackModel in model.GetAttackModels())
             {

@@ -47,6 +47,7 @@ public class ShrapGod : ModItemArtifact
     public override void ModifyGameModel(GameModel gameModel, int tier)
     {
         foreach (var tower in gameModel.GetTowersWithBaseId(TowerType.SniperMonkey)
+                     .AsIEnumerable()
                      .Where(model => model.appliedUpgrades.Contains(UpgradeType.ShrapnelShot)))
         {
             var mainProj = tower.GetAttackModel().weapons[0]!.projectile;

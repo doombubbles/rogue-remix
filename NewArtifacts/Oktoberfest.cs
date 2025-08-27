@@ -14,9 +14,9 @@ public class Oktoberfest : ModItemArtifact
 {
     private static float Effect(int tier) => tier switch
     {
-        Common => .5f,
-        Rare => 1,
-        Legendary => 2,
+        Common => 1,
+        Rare => 2,
+        Legendary => 4,
         _ => 0
     };
 
@@ -43,7 +43,7 @@ public class Oktoberfest : ModItemArtifact
 
     public override void ModifyGameModel(GameModel gameModel, int tier)
     {
-        foreach (var model in gameModel.GetTowersWithBaseId(TowerType.Alchemist))
+        foreach (var model in gameModel.GetTowersWithBaseId(TowerType.Alchemist).AsIEnumerable())
         {
             if (model.HasDescendant(out AddBerserkerBrewToProjectileModel brew))
             {

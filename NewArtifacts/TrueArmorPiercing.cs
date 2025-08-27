@@ -48,7 +48,7 @@ public class TrueArmorPiercing : ModItemArtifact
 
     public override void ModifyGameModel(GameModel gameModel, int tier)
     {
-        foreach (var towerModel in gameModel.GetTowersWithBaseId(TowerType.MonkeySub))
+        foreach (var towerModel in gameModel.GetTowersWithBaseId(TowerType.MonkeySub).AsIEnumerable())
         {
             towerModel.GetDescendants<DamageModel>()
                 .ForEach(model => model.immuneBloonProperties &= ~BloonProperties.Lead);

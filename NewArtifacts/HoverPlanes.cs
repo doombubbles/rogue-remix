@@ -51,7 +51,7 @@ public class HoverPlanes : ModItemArtifact
         var heli = gameModel.GetTower(TowerType.HeliPilot);
         var pursuitHeli = gameModel.GetTower(TowerType.HeliPilot, 2, 0, 0);
 
-        foreach (var towerModel in gameModel.GetTowersWithBaseId(TowerType.MonkeyAce))
+        foreach (var towerModel in gameModel.GetTowersWithBaseId(TowerType.MonkeyAce).AsIEnumerable())
         {
             var airUnit = towerModel.GetBehavior<AirUnitModel>();
             var attack = towerModel.GetBehavior<AttackAirUnitModel>();

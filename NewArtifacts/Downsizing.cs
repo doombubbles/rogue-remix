@@ -7,7 +7,7 @@ using Il2CppAssets.Scripts.Data.Legends;
 using Il2CppAssets.Scripts.Models;
 using Il2CppAssets.Scripts.Models.Artifacts;
 using Il2CppAssets.Scripts.Models.Towers.Behaviors;
-using Il2CppAssets.Scripts.Simulation.SMath;
+using Il2CppAssets.Scripts.Models.Towers.Weapons;
 using Il2CppAssets.Scripts.Unity.UI_New.Legends;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
@@ -17,14 +17,14 @@ public class Downsizing : ModItemArtifact
 {
     private static float Effect(int tier) => tier switch
     {
-        Common => .1f,
-        Rare => .15f,
-        Legendary => .25f,
+        Common => .05f,
+        Rare => .1f,
+        Legendary => .15f,
         _ => 0
     };
 
     public override string Description(int tier) =>
-        $"Towers cost {Effect(tier):P0} less and are {Effect(tier):P0} smaller";
+        $"Towers cost {Effect(tier):P0} less and are {Effect(tier)*2:P0} smaller";
 
     public override string Icon => VanillaSprites.SmallMonkeysModeIcon;
     public override bool SmallIcon => true;
@@ -40,19 +40,28 @@ public class Downsizing : ModItemArtifact
         {
             tower.cost = CostHelper.CostForDifficulty((int) tower.cost, 1 - Effect(tier));
 
+            var size = 1 - Effect(tier) * 2;
+
             if (tower.footprint.Is(out CircleFootprintModel circle))
             {
-                circle.radius *= 1 - Effect(tier);
+                circle.radius *= size;
             }
             else if (tower.footprint.Is(out RectangleFootprintModel rectangle))
             {
-                rectangle.xWidth *= 1 - Effect(tier);
-                rectangle.yWidth *= 1 - Effect(tier);
+                rectangle.xWidth *= size;
+                rectangle.yWidth *= size;
             }
 
-            tower.displayScale = 1 - Effect(tier);
-            tower.radius *= 1 - Effect(tier);
+            tower.displayScale = size;
+            tower.radius *= size;
             tower.RadiusSquared *= tower.radius * tower.radius;
+
+            tower.GetDescendants<WeaponModel>().ForEach(weapon =>
+            {
+                weapon.ejectX *= size;
+                weapon.ejectY *= size;
+                weapon.ejectZ *= size;
+            });
         }
     }
 

@@ -47,7 +47,7 @@ public class DoubleRanga : ModItemArtifact
 
     public override void ModifyGameModel(GameModel gameModel, int tier)
     {
-        foreach (var towerModel in gameModel.GetTowersWithBaseId(TowerType.BoomerangMonkey))
+        foreach (var towerModel in gameModel.GetTowersWithBaseId(TowerType.BoomerangMonkey).AsIEnumerable())
         {
             var attacks = new List<AttackModel> {towerModel.GetAttackModel()};
             if (towerModel.appliedUpgrades.Contains(UpgradeType.MOABPress))

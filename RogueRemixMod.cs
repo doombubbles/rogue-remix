@@ -12,14 +12,18 @@ using BTD_Mod_Helper.Api.Legends;
 using BTD_Mod_Helper.Api.ModOptions;
 using BTD_Mod_Helper.Extensions;
 using HarmonyLib;
+using Il2Cpp;
 using Il2CppAssets.Scripts.Data;
 using Il2CppAssets.Scripts.Data.Artifacts;
 using Il2CppAssets.Scripts.Models;
 using Il2CppAssets.Scripts.Models.Artifacts;
 using Il2CppAssets.Scripts.Models.Artifacts.Behaviors;
 using Il2CppAssets.Scripts.Models.Profile;
+using Il2CppAssets.Scripts.Models.Towers;
 using Il2CppAssets.Scripts.Simulation;
+using Il2CppAssets.Scripts.Simulation.Artifacts;
 using Il2CppAssets.Scripts.Unity;
+using Il2CppAssets.Scripts.Unity.UI_New.DailyChallenge;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using Il2CppAssets.Scripts.Unity.UI_New.Legends;
 using Il2CppAssets.Scripts.Unity.UI_New.Popups;
@@ -35,6 +39,17 @@ namespace RogueRemix;
 
 public class RogueRemixMod : BloonsTD6Mod
 {
+    public static readonly ModSettingFloat RogueMapAnimationSpeed = new(1)
+    {
+        description = "Speeds up the animations in the Rogue Legends map",
+        min = 1,
+        max = 3,
+        slider = true,
+        stepSize = .1f,
+        icon = VanillaSprites.FastForwardGlowBtn,
+        sliderSuffix = "x"
+    };
+
     public static readonly ModSettingBool DamageBoostsAffectModifiers = new(true)
     {
         description =
@@ -100,9 +115,15 @@ public class RogueRemixMod : BloonsTD6Mod
         description = "Use this to remove all hero completion data."
     };
 
-    public static readonly ModSettingBool TrainingSandboxMode = new(false)
+    public static readonly ModSettingBool TrainingSandboxMode = new(true)
     {
         description = "Makes the Rogue Legends training mode be Sandbox"
+    };
+
+    public static readonly ModSettingBool NoRaces = new(false)
+    {
+        description = "Replaces all Race and Endurance Race minigames with Least Cash minigames",
+        icon = VanillaSprites.LeastCashIcon
     };
 
     public override bool UsesArtifactDependants => true;
@@ -195,4 +216,37 @@ public class RogueRemixMod : BloonsTD6Mod
         }
     }
 
+    public override void OnUpdate()
+    {
+        ArtifactPlacementTowerCache.Clear();
+    }
+
+    private static readonly Dictionary<TowerModel, TowerModel> ArtifactPlacementTowerCache = new();
+
+    [HarmonyPatch(typeof(ArtifactManager), nameof(ArtifactManager.GetModifiedPlacementTowerModel))]
+    internal static class ArtifactManager_GetModifiedPlacementTowerModel
+    {
+        [HarmonyPrefix]
+        internal static bool Prefix(TowerModel towerModel, ref TowerModel __result, ref TowerModel? __state)
+        {
+            if (ArtifactPlacementTowerCache.TryGetValue(towerModel, out var tower))
+            {
+                __result = tower;
+                return false;
+            }
+
+            __state = towerModel;
+
+            return true;
+        }
+
+        [HarmonyPostfix]
+        internal static void Postfix(ArtifactManager __instance, TowerModel? __state, TowerModel __result)
+        {
+            if (__state != null && __state != __result)
+            {
+                ArtifactPlacementTowerCache.TryAdd(__state, __result);
+            }
+        }
+    }
 }

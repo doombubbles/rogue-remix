@@ -19,9 +19,9 @@ public class PrecisionMunition : ModItemArtifact
 
     private static float Effect(int tier) => tier switch
     {
-        Common => .1f,
-        Rare => .2f,
-        Legendary => .40f,
+        Common => 0f,
+        Rare => .1f,
+        Legendary => .2f,
         _ => 0
     };
 
@@ -48,7 +48,7 @@ public class PrecisionMunition : ModItemArtifact
 
     public override void ModifyGameModel(GameModel gameModel, int tier)
     {
-        foreach (var towerModel in gameModel.GetTowersWithBaseId(TowerType.BombShooter))
+        foreach (var towerModel in gameModel.GetTowersWithBaseId(TowerType.BombShooter).AsIEnumerable())
         {
             towerModel.isGlobalRange = true;
             towerModel.range = 20;

@@ -94,28 +94,28 @@ public class ToggleSettings : ModContent, IModSettings
     {
         foreach (var type in typeof(RogueRemixMod).Assembly.DefinedTypes)
         {
-            if (type.IsAbstract) continue;
+            if (type.IsAbstract ||
+                !type.IsAssignableTo(typeof(ModArtifact)) && !type.IsAssignableTo(typeof(ModVanillaArtifact)) ||
+                !RogueRemixMod.BoostsInShop && type.IsAssignableTo(typeof(ModBoostArtifact))) continue;
 
-            if (type.IsAssignableTo(typeof(ModArtifact)) || type.IsAssignableTo(typeof(ModVanillaArtifact)))
+            var setting = new ModSettingBool(true)
             {
-                var setting = new ModSettingBool(true)
-                {
-                    button = true,
-                };
-                if (type.IsAssignableTo(typeof(ModArtifact)))
-                {
-                    setting.category = NewArtifacts;
-                    setting.enabledText = "Active";
-                    setting.disabledText = "Inactive";
-                }
-                if (type.IsAssignableTo(typeof(ModVanillaArtifact)))
-                {
-                    setting.category = ArtifactChanges;
-                    setting.enabledText = "Changed";
-                    setting.disabledText = "Unchanged";
-                }
-                mod.ModSettings.Add(type.Name, setting);
+                button = true,
+            };
+            if (type.IsAssignableTo(typeof(ModArtifact)))
+            {
+                setting.category = NewArtifacts;
+                setting.enabledText = "Active";
+                setting.disabledText = "Inactive";
             }
+            if (type.IsAssignableTo(typeof(ModVanillaArtifact)))
+            {
+                setting.category = ArtifactChanges;
+                setting.enabledText = "Changed";
+                setting.disabledText = "Unchanged";
+            }
+
+            mod.ModSettings.Add(type.Name, setting);
         }
 
         return base.Load();

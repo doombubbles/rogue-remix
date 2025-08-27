@@ -56,7 +56,7 @@ public class Dreadnought : ModItemArtifact
             .GetDescendant<DisplayModel>()
             .display;
 
-        foreach (var towerModel in gameModel.GetTowersWithBaseId(TowerType.MonkeyBuccaneer))
+        foreach (var towerModel in gameModel.GetTowersWithBaseId(TowerType.MonkeyBuccaneer).AsIEnumerable())
         {
             towerModel.GetDescendants<ProjectileModel>().ForEach(proj =>
             {

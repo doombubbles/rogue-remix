@@ -3,7 +3,9 @@ using BTD_Mod_Helper.Extensions;
 using HarmonyLib;
 using Il2CppAssets.Scripts.Data.Legends;
 using Il2CppAssets.Scripts.Unity.Analytics;
+using Il2CppAssets.Scripts.Unity.Bridge;
 using Il2CppAssets.Scripts.Unity.UI_New.DailyChallenge;
+using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using Il2CppAssets.Scripts.Unity.UI_New.Legends;
 using UnityEngine;
 namespace RogueRemix;
@@ -88,6 +90,23 @@ public static class SkippingChanges
                 return false;
             }
             return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(UnityToSimulation), nameof(UnityToSimulation.ExecuteContinueFromCheckpoint))]
+    internal static class UnityToSimulation_ExecuteContinueFromCheckpoint
+    {
+        [HarmonyPostfix]
+        internal static void Postfix(UnityToSimulation __instance)
+        {
+            if (RogueLegendsManager.instance != null && InGameData.CurrentGame.rogueData != null &&
+                RogueLegendsManager.instance.RogueSaveData.Is(out var rogueSaveData) &&
+                rogueSaveData.unseenLivesLost > 0)
+            {
+                rogueSaveData.lives += rogueSaveData.unseenLivesLost;
+                rogueSaveData.currentStageStats.heartsLost -= rogueSaveData.unseenLivesLost;
+                rogueSaveData.unseenLivesLost = 0;
+            }
         }
     }
 }

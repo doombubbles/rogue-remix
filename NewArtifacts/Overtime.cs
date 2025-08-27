@@ -50,7 +50,8 @@ public class Overtime : ModItemArtifact
         [HarmonyPostfix]
         internal static void Postfix(InGame __instance)
         {
-            if (RogueLegendsManager.instance?.RogueSaveData != null &&
+            if (InGameData.CurrentGame?.rogueData != null &&
+                RogueLegendsManager.instance?.RogueSaveData != null &&
                 __instance.bridge?.Simulation != null &&
                 RogueLegendsManager.instance.RogueSaveData.HasArtifact<Overtime>(out var tier))
             {

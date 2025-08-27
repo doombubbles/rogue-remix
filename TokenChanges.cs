@@ -25,11 +25,7 @@ public static class TokenChanges
 
         if (artifacts.Length == 0) return;
 
-        var tokenAmount = artifacts.Max(loot => GameData.Instance.artifactsData
-            .GetArtifactData(loot.artifactName)
-            .ArtifactModel()
-            .Cast<ArtifactModelBase>()
-            .ArtifactPower);
+        var tokenAmount = artifacts.Max(loot => loot.ArtifactPower());
 
         if (artifacts.FirstOrDefault(loot => loot.baseId == "Token").Is(out var tokenLoot))
         {

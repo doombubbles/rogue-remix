@@ -18,9 +18,9 @@ public class LaserSharp : ModItemArtifact
 {
     private static float Effect(int tier) => tier switch
     {
-        Common => .25f,
-        Rare => .35f,
-        Legendary => .5f,
+        Common => .2f,
+        Rare => .25f,
+        Legendary => .35f,
         _ => 0f,
     };
 

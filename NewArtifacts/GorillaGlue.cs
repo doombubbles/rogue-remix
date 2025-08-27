@@ -52,8 +52,8 @@ public class GorillaGlue : ModItemArtifact, IArtifactSynergy
     {
         var models = new List<Model>();
 
-        models.AddRange(gameModel.GetTowersWithBaseId(TowerType.GlueGunner));
-        models.Add(gameModel.GetPowerWithName("GlueTrap"));
+        models.AddRange(gameModel.GetTowersWithBaseId(TowerType.GlueGunner).AsIEnumerable());
+        models.Add(gameModel.GetPowerWithId("GlueTrap"));
         models.Add(gameModel.GetGeraldoItemWithName("TubeOfAmazoGlue"));
 
         foreach (var model in models)
