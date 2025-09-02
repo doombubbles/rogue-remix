@@ -34,7 +34,9 @@ public class GottaGoFast : ModItemArtifact
         var towerUpgrades = Game.instance.model.towers.GroupBy(model => model.baseId)
             .ToDictionary(
                 group => group.Key,
-                group => group.SelectMany(model => model.appliedUpgrades).Distinct().ToArray()
+                group => group.SelectMany(model => model.appliedUpgrades ?? new Il2CppStringArray(0))
+                    .Distinct()
+                    .ToArray()
             );
 
         foreach (var (tower, upgrades) in towerUpgrades)

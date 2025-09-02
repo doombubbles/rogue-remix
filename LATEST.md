@@ -1,7 +1,1 @@
-- Fixed for BTD6 v50
-- Added a Rogue Map Animation Speed setting
-- Added a No Races settings that makes all minigames just be Least Cash mode
-- Upgrading a tower at a campfire no longer changes its position within the party
-- Fixed an issue with Never Tell Me The Odds not always properly affecting Splodey Darts
-- Receiving a higher tier of an artifact you already have will automatically sell the one you already have so the tokens aren't wasted
-- Optimized the vanilla artifact manager's interaction with checking tower placement validity so Useful Utilities' Auto Nudge doesn't lag
+- Fixes for BTD6 v50.1
