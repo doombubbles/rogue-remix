@@ -2,8 +2,8 @@ namespace RogueRemix;
 
 public static class ModHelperData
 {
-    public const string WorksOnVersion = "50.1";
-    public const string Version = "1.2.6";
+    public const string WorksOnVersion = "50.2";
+    public const string Version = "1.2.7";
     public const string Name = "Rogue Remix";
 
     public const string Description =

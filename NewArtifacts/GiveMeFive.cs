@@ -19,7 +19,7 @@ public class GiveMeFive : ModItemArtifact
     public static readonly float PriceReduction = .5f;
 
     public override string DescriptionLegendary =>
-        $"You can have up to 2 of each Tier 5 tower. Tier 5 upgrades and instas cost {PriceReduction:P0} less";
+        $"You can have 1 more of each Tier 5 tower. Tier 5 upgrades and instas cost {PriceReduction:P0} less";
 
     public override string Icon => VanillaSprites.InstaT5Icon;
 

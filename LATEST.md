@@ -1,1 +1,1 @@
-- Fixes for BTD6 v50.1
+- Fixed Crystal Ball for BTD6 v50.2

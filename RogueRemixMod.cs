@@ -131,13 +131,6 @@ public class RogueRemixMod : BloonsTD6Mod
     public override void OnTitleScreen()
     {
         var data = GameData.Instance.rogueData;
-#if DEBUG
-        var mapTemplates = data.mapTemplates;
-        data.mapTemplates = null;
-        FileIOHelper.SaveObject("rogueData.json", data);
-        data.mapTemplates = mapTemplates;
-#endif
-
         RulesChanges.ModifyRules(data);
 
         if (DisableCritPopups)
