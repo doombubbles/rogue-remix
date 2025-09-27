@@ -1,1 +1,1 @@
-- Fixed Crystal Ball for BTD6 v50.2
+- Fixed No Races setting for v50.2

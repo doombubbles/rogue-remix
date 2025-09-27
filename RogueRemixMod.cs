@@ -54,51 +54,72 @@ public class RogueRemixMod : BloonsTD6Mod
     {
         description =
             "By default, damage bonuses from boosts and artifacts don't affect additive modifiers like what Moab Maulers have. " +
-            "This settings makes them be affected."
+            "This settings makes them be affected.",
+        icon = VanillaSprites.MoabMaulerUpgradeIcon
     };
 
     public static readonly ModSettingBool AlwaysStockXpAndMM = new(true)
     {
-        description = "Makes merchants also stock the Rogue XP and Monkey Money tokens on stage 1 and after stage 4"
+        description = "Makes merchants also stock the Rogue XP and Monkey Money tokens on stage 1 and after stage 4",
+        icon = VanillaSprites.ArtifactTokenMonkeyMoney
     };
 
     public static readonly ModSettingBool DisableCritPopups = new(true)
     {
         description =
             "Disables Critical Hit popups added by Artifacts, which can noticeably improve performance under certain conditions.",
-        requiresRestart = true
+        requiresRestart = true,
+        icon = VanillaSprites.NotLackingCriticalInformation
     };
 
     public static readonly ModSettingBool SellingReplacesDiscarding = new(true)
     {
-        description = "Discarding an artifact will give tokens the same way selling it would"
-    };
-
-    public static readonly ModSettingBool BoostsInShop = new(false)
-    {
-        description =
-            "Makes boost popups no longer happen during matches, and instead Boosts can be purchased at Shop Tiles"
+        description = "Discarding an artifact will give tokens the same way selling it would",
+        icon = VanillaSprites.BetterSellDealsIcon
     };
 
     public static readonly ModSettingBool ArtifactUpgrading = new(true)
     {
         description =
-            "Allows artifacts you already have to appear as loot, and having two of the same artifact of the same tier will upgrade it to one of the higher tier."
+            "Allows artifacts you already have to appear as loot, and having two of the same artifact of the same tier will upgrade it to one of the higher tier.",
+        icon = VanillaSprites.UpgradeBtn
+    };
+
+    public static readonly ModSettingBool NoRaces = new(false)
+    {
+        description = "Replaces all Race and Endurance Race minigames with Least Cash minigames",
+        icon = VanillaSprites.LeastCashIcon
+    };
+
+    public static readonly ModSettingBool TrainingSandboxMode = new(true)
+    {
+        description = "Makes the Rogue Legends training mode be Sandbox",
+        icon = VanillaSprites.SandboxBtn
+    };
+
+    public static readonly ModSettingBool BoostsInShop = new(false)
+    {
+        description =
+            "Makes boost popups no longer happen during matches, and instead Boosts can be purchased at Shop Tiles",
+        icon = VanillaSprites.CurseNoBoosts
     };
 
     public static readonly ModSettingBool BloonEncounterRewardsRemix = new(false)
     {
-        description = "Makes all Bloon Encounters give a reward choice and not just tokens only"
+        description = "Makes all Bloon Encounters give a reward choice and not just tokens only",
+        icon = VanillaSprites.XpBoostReroll
     };
 
     public static readonly ModSettingBool SkippingRemix = new(false)
     {
-        description = "Makes skipping only cost lives if you have an active attempt going on the tile"
+        description = "Makes skipping only cost lives if you have an active attempt going on the tile",
+        icon = VanillaSprites.SkipArrows
     };
 
     public static readonly ModSettingBool TrackHeroLoadoutCompletions = new(true)
     {
-        description = "Saves info for displaying the completionist loadout borders."
+        description = "Saves info for displaying the completionist loadout borders.",
+        icon = VanillaSprites.HeroesIcon
     };
 
     public static readonly ModSettingButton ClearHeroCompletionData = new(() =>
@@ -112,18 +133,8 @@ public class RogueRemixMod : BloonsTD6Mod
             Popup.TransitionAnim.Scale));
     })
     {
-        description = "Use this to remove all hero completion data."
-    };
-
-    public static readonly ModSettingBool TrainingSandboxMode = new(true)
-    {
-        description = "Makes the Rogue Legends training mode be Sandbox"
-    };
-
-    public static readonly ModSettingBool NoRaces = new(false)
-    {
-        description = "Replaces all Race and Endurance Race minigames with Least Cash minigames",
-        icon = VanillaSprites.LeastCashIcon
+        description = "Use this to remove all hero completion data.",
+        icon = VanillaSprites.RestartIcon
     };
 
     public override bool UsesArtifactDependants => true;
@@ -168,7 +179,7 @@ public class RogueRemixMod : BloonsTD6Mod
 
     public override void OnSaveSettings(JObject settings)
     {
-        var jObject = settings[nameof(Completionism)] = new JObject();
+        var jObject = settings[nameof(Completionism)] ??= new JObject();
 
         foreach (var (stat, value) in Completionism.RogueRemixStats)
         {
