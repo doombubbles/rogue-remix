@@ -1,1 +1,1 @@
-- Fixed No Races setting for v50.2
+- Recompiled for BTD6 v51
