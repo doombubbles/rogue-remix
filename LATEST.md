@@ -1,1 +1,1 @@
-- Recompiled for BTD6 v51
+- Removed the no longer needed fix for Battlefield Commission interacting with Main Character now that it was causing issues

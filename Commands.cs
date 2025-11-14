@@ -25,7 +25,7 @@ public class ArtifactCommand : ModCommand
     public override string Command => "artifact";
     public override string Help => "deals with artifacts";
 
-    public override bool IsAvailable => RogueLegendsManager.instance?.RogueSaveData != null;
+    public override bool IsAvailable => RogueLegendsManager.instance?.LegendsData?.selectedRogueSave != null;
 
     public override bool Execute(ref string resultText) => ExplainSubcommands(out resultText);
 }
@@ -151,7 +151,7 @@ public class InstaCommand : ModCommand
 
     public override string Help => "Deals with rogue instas";
 
-    public override bool IsAvailable => RogueLegendsManager.instance?.RogueSaveData != null;
+    public override bool IsAvailable => RogueLegendsManager.instance?.LegendsData?.selectedRogueSave != null;
 
     public override bool Execute(ref string resultText) => ExplainSubcommands(out resultText);
 }

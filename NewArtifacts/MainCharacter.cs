@@ -36,31 +36,4 @@ public class MainCharacter : ModItemArtifact
         artifactModel.AddBoostBehavior(new RangeBoostBehaviorModel("", 1 - Effect(artifactModel.tier)), boost =>
             boost.towerSets = new Il2CppStructArray<TowerSet>([TowerSet.Hero]));
     }
-
-    /// <summary>
-    /// Fix interaction with Battlefield Commission where it checks with == TowerSet.Hero
-    /// </summary>
-    [HarmonyPatch(typeof(HeroXpPerBloonLayerBehavior), nameof(HeroXpPerBloonLayerBehavior.OnBloonDegrade))]
-    internal static class HeroXpPerBloonLayerBehavior_OnBloonDegrade
-    {
-        [HarmonyPrefix]
-        internal static void Prefix(HeroXpPerBloonLayerBehavior __instance, Tower poppedBy, ref TowerSet __state)
-        {
-            __state = TowerSet.None;
-            if (poppedBy is {towerModel: not null} && poppedBy.towerModel.towerSet.ContainsFlag(TowerSet.Hero))
-            {
-                __state = poppedBy.towerModel.towerSet;
-                poppedBy.towerModel.towerSet = TowerSet.Hero;
-            }
-        }
-
-        [HarmonyPostfix]
-        internal static void Postfix(HeroXpPerBloonLayerBehavior __instance, Tower poppedBy, ref TowerSet __state)
-        {
-            if (poppedBy is {towerModel: not null} && __state.ContainsFlag(TowerSet.Hero))
-            {
-                poppedBy.towerModel.towerSet = __state;
-            }
-        }
-    }
 }
