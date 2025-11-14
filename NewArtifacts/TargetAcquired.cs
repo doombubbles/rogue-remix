@@ -53,8 +53,17 @@ public class TargetAcquired : ModItemArtifact
 
         if (ModHelper.HasMod("TacticalTweaks", out var tacticalTweaks))
         {
-            dartling = !(bool) (ModSettingBool) tacticalTweaks.ModSettings["DartlingGunnerTargeting"];
-            mortar = !(bool) (ModSettingBool) tacticalTweaks.ModSettings["MortarMonkeyTargeting"];
+            if (tacticalTweaks.ModSettings.TryGetValue("DartlingGunnerTargeting", out var dartlingGunnerTargeting) &&
+                dartlingGunnerTargeting is ModSettingBool dartlingEnabled)
+            {
+                dartling = !dartlingEnabled;
+            }
+
+            if (tacticalTweaks.ModSettings.TryGetValue("MortarMonkeyTargeting", out var mortarMonkeyTargeting) &&
+                mortarMonkeyTargeting is ModSettingBool mortarEnabled)
+            {
+                mortar = !mortarEnabled;
+            }
         }
 
         if (dartling)

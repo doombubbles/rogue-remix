@@ -1,1 +1,1 @@
-- Removed the no longer needed fix for Battlefield Commission interacting with Main Character now that it was causing issues
+- Fixed an interaction between the Target Acquired artifact and using both the Tactical Tweaks + Mega Knowledge mods
