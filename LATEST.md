@@ -1,1 +1,1 @@
-- Fixed an interaction between the Target Acquired artifact and using both the Tactical Tweaks + Mega Knowledge mods
+- Fixed for v52

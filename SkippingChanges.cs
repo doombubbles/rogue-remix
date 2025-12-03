@@ -8,6 +8,7 @@ using Il2CppAssets.Scripts.Unity.UI_New.DailyChallenge;
 using Il2CppAssets.Scripts.Unity.UI_New.InGame;
 using Il2CppAssets.Scripts.Unity.UI_New.Legends;
 using UnityEngine;
+
 namespace RogueRemix;
 
 public static class SkippingChanges
@@ -35,7 +36,7 @@ public static class SkippingChanges
                 .First(transform => transform.name == "Cost")
                 .gameObject.SetActive(!DebugFreeSkipping &&
                                       (showContinueBtn ||
-                                       selectedTile.tileType != RogueTileType.pathStandardGame ||
+                                       selectedTile.tileType != (int) RogueTileType.pathStandardGame ||
                                        !showSkipBtn));
         }
     }

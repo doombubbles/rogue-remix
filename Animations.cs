@@ -7,13 +7,19 @@ namespace RogueRemix;
 
 public static class Animations
 {
-    [HarmonyPatch(typeof(RogueMonkeyMovement), nameof(RogueMonkeyMovement.Update))]
+    [HarmonyPatch(typeof(RogueMonkeyMovement), nameof(RogueMonkeyMovement.UpdateMovement))]
     internal static class RogueMonkeyMovement_Update
     {
+        [HarmonyPrefix]
+        internal static void Prefix(RogueMonkeyMovement __instance)
+        {
+            __instance.movementSpeed = 1 / RogueRemixMod.RogueMapAnimationSpeed;
+        }
+
         [HarmonyPostfix]
         internal static void Postfix(RogueMonkeyMovement __instance)
         {
-            __instance.movementTime = 1 / RogueRemixMod.RogueMapAnimationSpeed;
+            __instance.movementSpeed = 1 / RogueRemixMod.RogueMapAnimationSpeed;
         }
     }
 
