@@ -3,6 +3,7 @@ using System.Linq;
 using BTD_Mod_Helper.Extensions;
 using HarmonyLib;
 using Il2CppAssets.Scripts.Unity.UI_New.DailyChallenge;
+using Il2CppAssets.Scripts.Unity.UI_New.Legends;
 using Il2CppAssets.Scripts.Unity.UI_New.Main.PowersSelect;
 namespace RogueRemix;
 

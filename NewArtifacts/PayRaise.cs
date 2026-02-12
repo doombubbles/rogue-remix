@@ -4,6 +4,7 @@ using HarmonyLib;
 using Il2CppAssets.Scripts.Data.Legends;
 using Il2CppAssets.Scripts.Models.Artifacts;
 using Il2CppAssets.Scripts.Unity.UI_New.DailyChallenge;
+using Il2CppAssets.Scripts.Unity.UI_New.Legends;
 using Il2CppAssets.Scripts.Unity.UI_New.Popups;
 
 namespace RogueRemix.NewArtifacts;
