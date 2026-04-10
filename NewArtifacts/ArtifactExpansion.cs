@@ -40,7 +40,7 @@ public class ArtifactExpansion : ModBoostArtifact
         [HarmonyPostfix]
         internal static void Postfix(DisplayArtifactsPanel __instance)
         {
-            if (__instance.artifactCountTxt != null)
+            if (__instance.artifactCountTxt != null && __instance.RogueSaveData != null)
             {
                 __instance.artifactCountTxt.OverrideText(
                     ArtifactCount(__instance.RogueSaveData) + "/" + ArtifactLimit(__instance.RogueSaveData));

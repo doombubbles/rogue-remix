@@ -14,6 +14,7 @@ using Il2CppAssets.Scripts.Data;
 using Il2CppAssets.Scripts.Models.Artifacts;
 using Il2CppNinjaKiwi.Common;
 using Il2CppNinjaKiwi.Common.ResourceUtils;
+using Il2CppNinjaKiwi.Localization;
 using RogueRemix.ArtifactChanges;
 using UnityEngine;
 

@@ -15,11 +15,9 @@ A modification of BTD6's Rogue Legends game mode.
 This mod is a collection of changes I wanted to try out because I thought they'd increase my own enjoyment and interest
 in the Rogue Legends game mode. Many of them were inspired by aspects I enjoyed from other Roguelite games.
 
-- 15+ artifacts buffed, 30+ new artifacts added
+- Many artifacts buffed, 30+ new artifacts added
     - More strategy and variety for builds
     - New synergies between artifacts
-- Obtain permanent versions of boost artifacts
-    - Choose 1 of 3 to buy from Merchants
 - Reroll merchant shops using tokens
 - Upgrade Artifacts by finding duplicate copies of them
 - Sidegrade towers at Campfires
@@ -74,7 +72,7 @@ not using this mod does not seem to be saved to the profile, so sadly these can'
 
 ### Other Changes
 
-You can now "sidegrade" towers at the Campfire Mentor screen, e.g. going from 3-2-0 to 3-0-2
+You can now "sidegrade" towers at the Campfire Mentor screen, e.g. going from 3-0-1 to 3-1-0
 
 ![Screenshot of sidegrading at a campfire](Images/Screenshots/ScreenshotCampfire.png)
 

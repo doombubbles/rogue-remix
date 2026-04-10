@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BTD_Mod_Helper;
 using BTD_Mod_Helper.Api;
 using BTD_Mod_Helper.Api.Components;
 using BTD_Mod_Helper.Api.Data;
@@ -15,6 +16,7 @@ using Il2CppAssets.Scripts.Unity.UI_New.Legends;
 using Il2CppSystem.IO;
 using RogueRemix.NewArtifacts;
 using UnityEngine;
+
 namespace RogueRemix;
 
 public class ToggleSettings : ModContent, IModSettings
@@ -77,7 +79,7 @@ public class ToggleSettings : ModContent, IModSettings
                 new Info("Disable All", -1000, -100, 562, 200, anchor: new Vector2(0.5f, 1)),
                 VanillaSprites.RedBtnLong, new Action(() =>
                 {
-                    foreach (var setting in ModContent.GetInstance<RogueRemixMod>().ModSettings.Values
+                    foreach (var setting in GetInstance<RogueRemixMod>().ModSettings.Values
                                  .Where(setting => setting.category == ArtifactChanges)
                                  .OfType<ModSettingBool>())
                     {
@@ -96,11 +98,12 @@ public class ToggleSettings : ModContent, IModSettings
         {
             if (type.IsAbstract ||
                 !type.IsAssignableTo(typeof(ModArtifact)) && !type.IsAssignableTo(typeof(ModVanillaArtifact)) ||
-                !RogueRemixMod.BoostsInShop && type.IsAssignableTo(typeof(ModBoostArtifact))) continue;
+                !RogueRemixMod.BoostsInShop && type.IsAssignableTo(typeof(ModBoostArtifact)) ||
+                type == typeof(ItsATrap) && !ModHelper.HasMod("PowersInShop")) continue;
 
             var setting = new ModSettingBool(true)
             {
-                button = true,
+                button = true
             };
             if (type.IsAssignableTo(typeof(ModArtifact)))
             {
