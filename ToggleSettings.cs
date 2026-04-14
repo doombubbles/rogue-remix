@@ -65,7 +65,7 @@ public class ToggleSettings : ModContent, IModSettings
                 new Info("Enable All", 1000, -100, 562, 200, anchor: new Vector2(0.5f, 1)),
                 VanillaSprites.GreenBtnLong, new Action(() =>
                 {
-                    foreach (var setting in ModContent.GetInstance<RogueRemixMod>().ModSettings.Values
+                    foreach (var setting in GetInstance<RogueRemixMod>().ModSettings.Values
                                  .Where(setting => setting.category == ArtifactChanges)
                                  .OfType<ModSettingBool>())
                     {
@@ -103,7 +103,8 @@ public class ToggleSettings : ModContent, IModSettings
 
             var setting = new ModSettingBool(true)
             {
-                button = true
+                button = true,
+                displayName = type.Name,
             };
             if (type.IsAssignableTo(typeof(ModArtifact)))
             {

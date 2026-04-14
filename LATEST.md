@@ -1,1 +1,1 @@
-- Minor misc fixes
+- Fixed a localization issue that was an unexpected side effect of the dynamically generated Artifact toggling ModSettings
