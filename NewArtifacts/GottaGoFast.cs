@@ -36,12 +36,13 @@ public class GottaGoFast : ModItemArtifact
                 group => group.Key,
                 group => group.SelectMany(model => model.appliedUpgrades ?? new Il2CppStringArray(0))
                     .Distinct()
+                    .Where(s => s != null)
                     .ToArray()
             );
 
         foreach (var (tower, upgrades) in towerUpgrades)
         {
-            var tiers = new[] {6, 6, 6};
+            var tiers = new[] { 6, 6, 6 };
             var any = false;
 
             foreach (var upgrade in upgrades.Where(s => s.Contains("Faster")))

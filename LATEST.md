@@ -1,1 +1,1 @@
-- Fixed a localization issue that was an unexpected side effect of the dynamically generated Artifact toggling ModSettings
+- Fixed Gotta Go Fast artifact NullReferenceException
