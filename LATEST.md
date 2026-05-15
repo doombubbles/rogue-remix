@@ -1,1 +1,1 @@
-- Fixed Hover Planes Artifact for Spectre / Flying Fortress
+- Fixed another Hover Planes Artifact bug

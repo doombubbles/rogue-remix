@@ -1,4 +1,5 @@
-﻿using BTD_Mod_Helper.Api.Enums;
+﻿using System.Linq;
+using BTD_Mod_Helper.Api.Enums;
 using BTD_Mod_Helper.Api.Legends;
 using BTD_Mod_Helper.Extensions;
 using Il2CppAssets.Scripts.Models;
@@ -54,7 +55,9 @@ public class HoverPlanes : ModItemArtifact
         foreach (var towerModel in gameModel.GetTowersWithBaseId(TowerType.MonkeyAce).AsIEnumerable())
         {
             var airUnit = towerModel.GetBehavior<AirUnitModel>();
-            var attacks = towerModel.GetBehaviors<AttackAirUnitModel>();
+            var attacks = towerModel.GetBehaviors<AttackModel>();
+
+            var shouldHavePursuit = attacks.Any(attack => attack.HasBehavior<CenterElipsePatternModel>());
 
             var heliMovement = heli.GetDescendant<HeliMovementModel>().Duplicate();
             heliMovement.maxSpeed = airUnit.GetBehavior<PathMovementModel>().speed;
@@ -62,19 +65,26 @@ public class HoverPlanes : ModItemArtifact
             airUnit.RemoveBehavior<PathMovementModel>();
             airUnit.AddBehavior(heliMovement);
 
+            var firstAttack = true;
+
             foreach (var attack in attacks)
             {
-                var shouldHavePursuit = attack.HasBehavior<CenterElipsePatternModel>();
-                attack.RemoveBehaviors<TargetSupplierModel>();
+                attack.RemoveBehaviors<CirclePatternModel>();
+                attack.RemoveBehaviors<FigureEightPatternModel>();
+                attack.RemoveBehaviors<CenterElipsePatternModel>();
+                attack.RemoveBehaviors<WingmonkeyPatternModel>();
 
                 var copyFromAttack = (shouldHavePursuit ? pursuitHeli : heli).GetAttackModel();
+
+                attack.AddBehavior(copyFromAttack.GetBehavior<RotateToTargetAirUnitModel>().Duplicate());
+
+                if (!firstAttack) continue;
+                firstAttack = false;
 
                 foreach (var targetSupplierModel in copyFromAttack.GetBehaviors<TargetSupplierModel>())
                 {
                     attack.AddBehavior(targetSupplierModel.Duplicate());
                 }
-
-                attack.AddBehavior(copyFromAttack.GetBehavior<RotateToTargetAirUnitModel>().Duplicate());
             }
 
             foreach (var attackModel in towerModel.GetAttackModels())
@@ -86,8 +96,6 @@ public class HoverPlanes : ModItemArtifact
                 {
                     weaponModel.fireWithoutTarget = false;
                 }
-
-                attackModel.targetProvider = null;
             }
 
             towerModel.UpdateTargetProviders();
