@@ -54,7 +54,7 @@ public class HoverPlanes : ModItemArtifact
         foreach (var towerModel in gameModel.GetTowersWithBaseId(TowerType.MonkeyAce).AsIEnumerable())
         {
             var airUnit = towerModel.GetBehavior<AirUnitModel>();
-            var attack = towerModel.GetBehavior<AttackAirUnitModel>();
+            var attacks = towerModel.GetBehaviors<AttackAirUnitModel>();
 
             var heliMovement = heli.GetDescendant<HeliMovementModel>().Duplicate();
             heliMovement.maxSpeed = airUnit.GetBehavior<PathMovementModel>().speed;
@@ -62,17 +62,20 @@ public class HoverPlanes : ModItemArtifact
             airUnit.RemoveBehavior<PathMovementModel>();
             airUnit.AddBehavior(heliMovement);
 
-            var shouldHavePursuit = attack.HasBehavior<CenterElipsePatternModel>();
-            attack.RemoveBehaviors<TargetSupplierModel>();
-
-            var copyFromAttack = (shouldHavePursuit ? pursuitHeli : heli).GetAttackModel();
-
-            foreach (var targetSupplierModel in copyFromAttack.GetBehaviors<TargetSupplierModel>())
+            foreach (var attack in attacks)
             {
-                attack.AddBehavior(targetSupplierModel.Duplicate());
-            }
+                var shouldHavePursuit = attack.HasBehavior<CenterElipsePatternModel>();
+                attack.RemoveBehaviors<TargetSupplierModel>();
 
-            attack.AddBehavior(copyFromAttack.GetBehavior<RotateToTargetAirUnitModel>().Duplicate());
+                var copyFromAttack = (shouldHavePursuit ? pursuitHeli : heli).GetAttackModel();
+
+                foreach (var targetSupplierModel in copyFromAttack.GetBehaviors<TargetSupplierModel>())
+                {
+                    attack.AddBehavior(targetSupplierModel.Duplicate());
+                }
+
+                attack.AddBehavior(copyFromAttack.GetBehavior<RotateToTargetAirUnitModel>().Duplicate());
+            }
 
             foreach (var attackModel in towerModel.GetAttackModels())
             {
@@ -83,7 +86,11 @@ public class HoverPlanes : ModItemArtifact
                 {
                     weaponModel.fireWithoutTarget = false;
                 }
+
+                attackModel.targetProvider = null;
             }
+
+            towerModel.UpdateTargetProviders();
         }
     }
 }

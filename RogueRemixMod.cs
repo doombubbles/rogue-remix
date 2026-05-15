@@ -159,7 +159,7 @@ public class RogueRemixMod : BloonsTD6Mod
 
     public override void OnNewGameModel(GameModel gameModel)
     {
-        if (InGameData.CurrentGame.rogueData == null || RogueLegendsManager.instance?.RogueSaveData == null) return;
+        if (InGameData.CurrentGame?.rogueData == null || RogueLegendsManager.instance?.RogueSaveData == null) return;
 
         var artifactsInventory = RogueLegendsManager.instance.RogueSaveData.artifactsInventory;
         var artifacts = GameData.Instance.artifactsData.artifactDatas

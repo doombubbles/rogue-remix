@@ -1,1 +1,1 @@
-- Fixed Gotta Go Fast artifact NullReferenceException
+- Fixed Hover Planes Artifact for Spectre / Flying Fortress
