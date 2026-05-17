@@ -81,7 +81,6 @@ public class GiveArtifactCommand : ModCommand<ArtifactCommand>
                 ArtifactId = artifactId
             };
             mod.AddContent(command);
-            command.Register();
         }
     }
 

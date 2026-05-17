@@ -67,8 +67,16 @@ public class HoverPlanes : ModItemArtifact
 
             var firstAttack = true;
 
-            foreach (var attack in attacks)
+            foreach (var attack in attacks.OrderBy(model => model.name.Length))
             {
+                attack.fireWithoutTarget = false;
+                attack.range = 99999;
+
+                foreach (var weaponModel in attack.weapons)
+                {
+                    weaponModel.fireWithoutTarget = false;
+                }
+
                 attack.RemoveBehaviors<CirclePatternModel>();
                 attack.RemoveBehaviors<FigureEightPatternModel>();
                 attack.RemoveBehaviors<CenterElipsePatternModel>();
@@ -83,18 +91,7 @@ public class HoverPlanes : ModItemArtifact
 
                 foreach (var targetSupplierModel in copyFromAttack.GetBehaviors<TargetSupplierModel>())
                 {
-                    attack.AddBehavior(targetSupplierModel.Duplicate());
-                }
-            }
-
-            foreach (var attackModel in towerModel.GetAttackModels())
-            {
-                attackModel.fireWithoutTarget = false;
-                attackModel.range = 99999;
-
-                foreach (var weaponModel in attackModel.weapons)
-                {
-                    weaponModel.fireWithoutTarget = false;
+                    attack.AddBehavior(targetSupplierModel.Duplicate(Name));
                 }
             }
 
